@@ -1,0 +1,116 @@
+<sw-page>
+
+    <template #content>
+
+        <sw-card
+            v-if="school"
+            :title="$tc('school.detail.title')"
+        >
+
+            <sw-alert
+                v-if="actionMessage"
+                :variant="actionVariant"
+                style="margin-bottom: 16px;"
+            >
+                {{ actionMessage }}
+            </sw-alert>
+
+            <sw-container columns="2fr 2fr">
+
+                <sw-text-field
+                    :label="$tc('school.detail.schoolName')"
+                    :value="school.schoolName"
+                    disabled
+                />
+
+                <sw-text-field
+                    :label="$tc('school.detail.contactPerson')"
+                    :value="school.contactPerson"
+                    disabled
+                />
+
+                <sw-text-field
+                    :label="$tc('school.detail.email')"
+                    :value="school.email"
+                    disabled
+                />
+
+                <sw-text-field
+                    :label="$tc('school.detail.phone')"
+                    :value="school.phone"
+                    disabled
+                />
+
+                <sw-text-field
+                    :label="$tc('school.detail.street')"
+                    :value="school.street"
+                    disabled
+                />
+
+                <sw-text-field
+                    :label="$tc('school.detail.zipcode')"
+                    :value="school.zipcode"
+                    disabled
+                />
+
+                <sw-text-field
+                    :label="$tc('school.detail.city')"
+                    :value="school.city"
+                    disabled
+                />
+
+                <sw-card
+                    v-if="school.logoMedia"
+                >
+                    <div style="margin-bottom: 10px;">
+                        {{ $tc('school.detail.logo') }}
+                    </div>
+
+                    <img
+                        v-if="school.logoMedia"
+                        :src="school.logoMedia.url"
+                        style="max-width:150px; max-height:150px;"
+                    />
+                </sw-card>
+
+                <sw-textarea-field
+                    :label="$tc('school.detail.comment')"
+                    :value="school.comment"
+                    disabled
+                />
+
+                <sw-text-field
+                    :label="$tc('school.detail.status')"
+                    :value="school.status"
+                    disabled
+                />
+
+            </sw-container>
+
+            <template #footer>
+
+                <sw-button
+                    variant="primary"
+                    :isLoading="isLoading"
+                    :disabled="isLoading"
+                    @click="approveSchool"
+                >
+                    {{ $tc('school.actions.approve') }}
+                </sw-button>
+
+                <sw-button
+                    variant="danger"
+                    :isLoading="isLoading"
+                    :disabled="isLoading"
+                    @click="disableSchool"
+                >
+                    {{ $tc('school.actions.disable') }}
+                </sw-button>
+
+            </template>
+
+        </sw-card>
+
+    </template>
+
+</sw-page>

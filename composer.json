@@ -1,0 +1,28 @@
+{
+    "name": "school-plugin/school-plugin",
+    "description": "school-plugin/school-plugin",
+    "type": "shopware-platform-plugin",
+    "version": "1.0.0",
+    "license": "MIT",
+    "require": {
+        "shopware/core": "~6.7.0"
+    },
+    "extra": {
+        "shopware-plugin-class": "SchoolPlugin\\SchoolPlugin",
+        "label": {
+            "de-DE": "Schul plugin",
+            "en-GB": "School plugin"
+        },
+        "snippet-path": "src/Resources/snippet"
+    },
+    "autoload": {
+        "psr-4": {
+            "SchoolPlugin\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SchoolPlugin\\Tests\\": "tests/"
+        }
+    }
+}

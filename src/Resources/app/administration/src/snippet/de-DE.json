@@ -1,0 +1,57 @@
+{
+    "school": {
+        "general": {
+            "mainMenuItem": "Schulen",
+            "title": "Schulverwaltung"
+        },
+
+        "listing": {
+            "schoolName": "Schulname",
+            "contactPerson": "Ansprechpartner",
+            "email": "E-Mail",
+            "phone": "Telefon",
+            "city": "Stadt",
+            "status": "Status"
+        },
+
+        "detail": {
+            "title": "Schuldetails",
+            "schoolName": "Schulname",
+            "contactPerson": "Ansprechpartner",
+            "email": "E-Mail",
+            "phone": "Telefon",
+            "street": "Straße",
+            "zipcode": "Postleitzahl",
+            "city": "Stadt",
+            "website": "Webseite",
+            "logo": "Schullogo",
+            "studentCount": "Schüleranzahl",
+            "comment": "Kommentar",
+            "status": "Status",
+            "successTitle": "Erfolg",
+            "errorTitle": "Fehler",
+            "approveSuccess": "Schule wurde erfolgreich genehmigt.",
+            "disableSuccess": "Schule wurde erfolgreich deaktiviert.",
+            "approveError": "Schule konnte nicht genehmigt werden.",
+            "disableError": "Schule konnte nicht deaktiviert werden."
+        },
+
+        "actions": {
+            "approve": "Freigeben",
+            "disable": "Deaktivieren",
+            "back": "Zurück"
+        },
+
+        "status": {
+            "approved": "Aktiv",
+            "disabled": "Deaktiviert"
+        }
+    },
+    "sw-flow-custom-event": {
+        "flow-list": {
+            "school_approved": "Schule genehmigt",
+            "school_parent_invitation": "Elterneinladung der Schule"
+        }
+
+    }
+}

@@ -1,0 +1,58 @@
+
+{% sw_extends '@Storefront/storefront/page/content/index.html.twig' %}
+
+{% block page_content %}
+
+    {{ parent() }}
+
+    {% if page.category.extensions.school is defined and page.category.extensions.school %}
+
+        <div class="school-parent-invitation container mt-5 mb-5">
+
+            <h2>
+                Invite parents to {{ page.category.extensions.school.schoolName }}
+            </h2>
+
+            <form method="post"
+                  action="{{ path('frontend.school.invite.parent', {
+                      schoolId: page.category.extensions.school.id
+                  }) }}">
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Parent name
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="text"
+                        name="parentName"
+                        placeholder="Enter parent's name"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Parent email
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="email"
+                        name="email"
+                        placeholder="Enter parent's email"
+                        required>
+                </div>
+
+                <button class="btn btn-primary">
+                    Invite parent
+                </button>
+
+            </form>
+
+        </div>
+
+    {% endif %}
+
+{% endblock %}
+

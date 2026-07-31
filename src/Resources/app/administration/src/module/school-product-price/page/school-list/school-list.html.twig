@@ -1,0 +1,103 @@
+<sw-page>
+
+    <template #smart-bar-header>
+        <h2>
+            School Product Prices
+        </h2>
+    </template>
+
+
+    <template #smart-bar-actions>
+
+        <sw-button
+            variant="primary"
+            @click="loadSchools"
+        >
+            Refresh
+        </sw-button>
+
+    </template>
+
+
+    <template #content>
+
+        <sw-card
+            title="Schools"
+        >
+
+            <sw-data-grid
+
+                v-if="schools.length"
+
+                :data-source="schools"
+
+                :columns="[
+
+                    {
+                        property: 'schoolName',
+                        label: 'School Name',
+                        primary: true
+                    },
+
+                    {
+                        property: 'contactPerson',
+                        label: 'Contact Person'
+                    },
+
+                    {
+                        property: 'email',
+                        label: 'Email'
+                    }
+
+                ]"
+
+                :show-actions="true"
+
+                :is-loading="isLoading"
+
+            >
+
+
+                <template #column-schoolName="{ item }">
+
+                    <a
+                        href="#"
+                        @click.prevent="openSchool(item)"
+                    >
+                        {{ item.schoolName }}
+                    </a>
+
+                </template>
+
+
+                <template #actions="{ item }">
+
+                    <sw-context-menu-item
+                        @click="openSchool(item)"
+                    >
+
+                        Manage products
+
+                    </sw-context-menu-item>
+
+                </template>
+
+
+            </sw-data-grid>
+
+
+            <sw-empty-state
+
+                v-else
+
+                title="No schools found"
+
+            />
+
+
+        </sw-card>
+
+    </template>
+
+
+</sw-page>

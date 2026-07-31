@@ -1,0 +1,58 @@
+{
+    "school": {
+        "general": {
+            "mainMenuItem": "Schools",
+            "title": "School Management"
+        },
+
+        "listing": {
+            "schoolName": "School Name",
+            "contactPerson": "Contact Person",
+            "email": "Email",
+            "phone": "Phone",
+            "city": "City",
+            "status": "Status"
+        },
+
+        "detail": {
+            "title": "School Details",
+            "schoolName": "School Name",
+            "contactPerson": "Contact Person",
+            "email": "Email",
+            "phone": "Phone",
+            "street": "Street",
+            "zipcode": "Zip Code",
+            "city": "City",
+            "website": "Website",
+            "logo": "School Logo",
+            "studentCount": "Student Count",
+            "comment": "Comment",
+            "status": "Status",
+            "successTitle": "Success",
+            "errorTitle": "Error",
+            "approveSuccess": "School approved successfully.",
+            "disableSuccess": "School disabled successfully.",
+            "approveError": "Could not approve school.",
+            "disableError": "Could not disable school."
+        },
+
+        "actions": {
+            "approve": "Approve",
+            "disable": "Disable",
+            "back": "Back"
+        },
+
+        "status": {
+            "approved": "Active",
+            "disabled": "Disabled"
+        }
+    },
+    "sw-flow-custom-event": {
+        "flow-list": {
+            "school_approved": "School approved",
+            "school_parent_invitation": "School parent invitation"
+        }
+
+    }
+
+}

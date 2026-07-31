@@ -1,0 +1,55 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% block base_content %}
+
+<div class="container py-5">
+
+    <div class="card mb-5 shadow-sm">
+        <div class="card-body text-center">
+
+            {% if school.logoMedia %}
+                <img
+                    src="{{ school.logoMedia.url }}"
+                    class="img-fluid mb-4"
+                    style="max-height:150px">
+            {% endif %}
+
+            <h1 class="display-5">
+                {{ school.schoolName }}
+            </h1>
+
+            <p class="lead">
+                Welcome to the {{ school.schoolName }} school shop.
+            </p>
+
+            <p>
+                Order your official school products below.
+            </p>
+
+        </div>
+    </div>
+
+    <h2 class="mb-4">
+        School Products
+    </h2>
+
+    <div class="row cms-listing-row js-listing-wrapper">
+
+        {% for product in products %}
+            <div class="col-md-4 mb-4">
+                {% sw_include '@Storefront/storefront/component/product/card/box.html.twig' with {
+                    'product': product,
+                    'layout': 'standard',
+                    school: school
+                } %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                No products available for this school yet.
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}

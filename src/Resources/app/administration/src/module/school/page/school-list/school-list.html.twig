@@ -1,0 +1,45 @@
+<sw-page>
+
+    <template #content>
+
+        <sw-data-grid
+            v-if="schools.length"
+            :data-source="schools"
+            :columns="columns"
+            :is-loading="isLoading"
+        >
+
+            <template #column-schoolName="{ item }">
+
+                <a
+                    href="#"
+                    @click.prevent="onRowClick(item)"
+                >
+                    {{ item.schoolName }}
+                </a>
+
+            </template>
+
+
+            <template #column-status="{ item }">
+
+            <sw-label
+                :variant="
+                    item.status === 'approved'
+                        ? 'success'
+                        : item.status === 'disabled'
+                            ? 'danger'
+                            : 'warning'
+                "
+            >
+                {{ $tc('school.status.' + item.status) }}
+            </sw-label>
+
+        </template>
+
+
+        </sw-data-grid>
+
+    </template>
+
+</sw-page>

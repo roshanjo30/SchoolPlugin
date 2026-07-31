@@ -1,0 +1,18 @@
+{% sw_extends '@Storefront/storefront/component/product/card/price-unit.html.twig' %}
+
+
+{% block component_product_box_price %}
+
+    {% if product.extensions.schoolPrice %}
+
+        <div class="product-price">
+            {{ product.extensions.schoolPrice.price }}
+        </div>
+
+    {% else %}
+
+        {{ parent() }}
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,110 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% block base_content %}
+<div class="container py-5">
+
+    <h1 class="mb-4">School Registration</h1>
+
+    <form method="post"
+          enctype="multipart/form-data"
+          action="{{ path('frontend.school.registration.submit') }}">
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label>School Name *</label>
+                <input type="text"
+                       class="form-control"
+                       name="schoolName"
+                       required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Contact Person *</label>
+                <input type="text"
+                       class="form-control"
+                       name="contactPerson"
+                       required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Email *</label>
+                <input type="email"
+                       class="form-control"
+                       name="email"
+                       required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Phone</label>
+                <input type="text"
+                       class="form-control"
+                       name="phone">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Street</label>
+                <input type="text"
+                       class="form-control"
+                       name="street">
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label>ZIP Code</label>
+                <input type="text"
+                       class="form-control"
+                       name="zipcode">
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label>City</label>
+                <input type="text"
+                       class="form-control"
+                       name="city">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Country *</label>
+
+                <select class="form-select"
+                        name="countryId"
+                        required>
+
+                    <option value="">Select country</option>
+
+                    {% for country in countries %}
+                        <option value="{{ country.id }}">
+                            {{ country.translated.name }}
+                        </option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>School Logo *</label>
+                <input type="file"
+                       class="form-control"
+                       name="logo"
+                       accept=".jpg,.jpeg,.png,.svg"
+                       required>
+            </div>
+
+            <div class="col-12 mb-3">
+                <label>Comments</label>
+
+                <textarea class="form-control"
+                          rows="5"
+                          name="comment"></textarea>
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary">
+            Submit
+        </button>
+
+    </form>
+
+</div>
+{% endblock %}
