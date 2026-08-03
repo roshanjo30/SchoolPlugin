@@ -37,7 +37,6 @@ class SchoolCartController extends StorefrontController
             $context
         );
 
-
         $lineItem = new LineItem(
             $productId,
             LineItem::PRODUCT_LINE_ITEM_TYPE,
@@ -45,12 +44,10 @@ class SchoolCartController extends StorefrontController
             1
         );
 
-
         $lineItem->setPayloadValue(
             'schoolId',
             $schoolId
         );
-
 
         $this->cartService->add(
             $cart,
@@ -59,11 +56,9 @@ class SchoolCartController extends StorefrontController
         );
 
         $session = $this->requestStack->getSession();
-
         if ($session) {
             $session->remove('selected_school_id');
         }
-
 
         return $this->redirectToRoute(
             'frontend.checkout.cart.page'

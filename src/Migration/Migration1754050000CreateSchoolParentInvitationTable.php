@@ -19,6 +19,8 @@ class Migration1754050000CreateSchoolParentInvitationTable extends MigrationStep
 CREATE TABLE IF NOT EXISTS `school_parent_invitation` (
     `id` BINARY(16) NOT NULL,
     `school_id` BINARY(16) NOT NULL,
+    `token` CHAR(64) NOT NULL,
+    `parent_name` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NOT NULL,
     `created_at` DATETIME(3) NOT NULL,
     `updated_at` DATETIME(3) NULL,
@@ -30,6 +32,8 @@ CREATE TABLE IF NOT EXISTS `school_parent_invitation` (
         REFERENCES `school` (`id`)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
+
+    UNIQUE KEY `uniq_school_parent_invitation_token` (`token`),
 
     KEY `idx_school_parent_invitation_school_id` (`school_id`),
     KEY `idx_school_parent_invitation_email` (`email`)

@@ -193,6 +193,19 @@
                     id="school_product_price.repository"/>
 
         </service>
+
+
+        <service id="SchoolPlugin\Storefront\Controller\SchoolInvitationController"
+         public="true">
+            <argument type="service" id="school_parent_invitation.repository"/>
+            <argument type="service" id="school.repository"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
             
     </services>
 </container>

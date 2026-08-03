@@ -9,6 +9,8 @@ class SchoolParentInvitationEntity extends Entity
 {
     protected string $schoolId;
 
+    protected ?string $parentName = null;
+
     protected string $email;
 
     protected ?SchoolEntity $school = null;
@@ -41,5 +43,15 @@ class SchoolParentInvitationEntity extends Entity
     public function setSchool(?SchoolEntity $school): void
     {
         $this->school = $school;
+    }
+
+    public function getParentName(): ?string
+    {
+        return $this->parentName;
+    }
+
+    public function setParentName(?string $parentName): void
+    {
+        $this->parentName = $parentName;
     }
 }

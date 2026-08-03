@@ -69,12 +69,15 @@ class ParentInvitationController extends StorefrontController
             );
         }
 
+        $token = bin2hex(random_bytes(32));
+
         $this->schoolParentInvitationRepository->create([
             [
                 'id' => Uuid::randomHex(),
                 'schoolId' => $schoolId,
                 'parentName' => $parentName,
                 'email' => $email,
+                'token' => $token,
             ],
         ], $context);
 
@@ -108,7 +111,7 @@ class ParentInvitationController extends StorefrontController
             );
         }
 
-        $categoryUrl = $domain . '/school/' . $school->getId();
+        $categoryUrl = $domain . '/school/invite/' . $token;
 
         $mailRecipients = new MailRecipientStruct([
             $email => $parentName,

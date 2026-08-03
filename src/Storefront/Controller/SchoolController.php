@@ -18,11 +18,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class SchoolController extends StorefrontController
 {
     public function __construct(
-        private readonly EntityRepository $countryRepository,
+    private readonly EntityRepository $countryRepository,
     private readonly \SchoolPlugin\Service\SchoolRegistrationService $schoolRegistrationService
         
-        
-    
+
     ) {
     }
 

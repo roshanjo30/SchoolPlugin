@@ -28,13 +28,11 @@ class SchoolPageController extends StorefrontController
          * @var EntityRepository<SchoolProductPriceEntity>
          */
         private readonly EntityRepository $schoolProductPriceRepository,
-    
         private readonly ProductDetailRoute $productDetailRoute,
         private readonly RequestStack $requestStack,
         private readonly CartService $cartService
     ) {
     }
-
 
     #[Route(
         path: '/school/{schoolId}',
@@ -49,6 +47,13 @@ class SchoolPageController extends StorefrontController
 
         $context = $salesChannelContext->getContext();
 
+        $session = $this->requestStack->getSession();
+
+        $token = $session?->get('school_invitation_token');
+
+        if (!$token) {
+            throw $this->createNotFoundException();
+        }
 
         $school = $this->schoolRepository
             ->search(
@@ -57,41 +62,22 @@ class SchoolPageController extends StorefrontController
             )
             ->first();
 
-
             if (!$school) {
                 throw $this->createNotFoundException();
             }
 
-
-
-            /*
-            * Store selected school
-            * Used later by cart price processor
-            */
             $session = $this->requestStack->getSession();
 
     if ($session) {
 
-        /*
-        * User is entering a school store.
-        * If they were previously browsing the normal store,
-        * we'll clear the cart here.
-        */
+    
         $currentSchoolId = $session->get('selected_school_id');
 
-
-            /*
-            * Clear cart when:
-            * - entering first school
-            * - switching from one school to another
-            */
             if ($currentSchoolId !== $schoolId) {
-
                 $cart = $this->cartService->getCart(
                     $salesChannelContext->getToken(),
                     $salesChannelContext
                 );
-
 
                 if ($cart->getLineItems()->count() > 0) {
 
@@ -104,12 +90,10 @@ class SchoolPageController extends StorefrontController
                 }
             }
 
-
             $session->set(
                 'current_store',
                 'school'
             );
-
 
             $session->set(
                 'selected_school_id',
@@ -118,12 +102,7 @@ class SchoolPageController extends StorefrontController
     }
 
 
-
-        /*
-         * Load school specific prices
-         */
         $priceCriteria = new Criteria();
-
 
         $priceCriteria->addFilter(
             new EqualsFilter(
@@ -131,7 +110,6 @@ class SchoolPageController extends StorefrontController
                 $schoolId
             )
         );
-
 
         $schoolPrices = $this->schoolProductPriceRepository
             ->search(
@@ -152,11 +130,7 @@ class SchoolPageController extends StorefrontController
 
         }
 
-
-
         $products = [];
-
-
 
         if ($school->getCategoryId()) {
 
@@ -171,7 +145,6 @@ class SchoolPageController extends StorefrontController
                 )
             );
 
-
             $productIds = $this->productRepository
                 ->searchIds(
                     $criteria,
@@ -180,18 +153,12 @@ class SchoolPageController extends StorefrontController
                 ->getIds();
 
 
-
-
             foreach ($productIds as $productId) {
 
-
                 $detailCriteria = new Criteria();
-
-
                 $detailCriteria->addAssociation(
                     'cover.media'
                 );
-
 
 
                 $detail = $this->productDetailRoute->load(
@@ -201,17 +168,10 @@ class SchoolPageController extends StorefrontController
                     $detailCriteria
                 );
 
-
-
                 $product = $detail->getProduct();
 
 
-
-                /*
-                 * Add school price extension
-                 */
                 if (isset($schoolPriceMap[$productId])) {
-
 
                     $product->addExtension(
                         'schoolPrice',
@@ -224,18 +184,11 @@ class SchoolPageController extends StorefrontController
                         ])
                     );
 
-
                 }
-
-
-
                 $products[] = $product;
-
             }
 
         }
-
-
 
         return $this->renderStorefront(
             '@SchoolPlugin/storefront/page/index.html.twig',
