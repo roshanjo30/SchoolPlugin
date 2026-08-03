@@ -1,47 +1,108 @@
-<sw-card title="School Products">
+<sw-page>
 
-    <sw-data-grid
-        v-if="products.length"
-        :data-source="products"
-        :columns="columns"
-    >
+    <template #smart-bar-header>
 
-        <template #column-name="{ item }">
-            {{ item.translated?.name || item.name }}
-        </template>
+        <h2>
+            School Product Prices
+        </h2>
 
-        <template #column-productNumber="{ item }">
-            {{ item.productNumber }}
-        </template>
+    </template>
 
-        <template #column-defaultPrice="{ item }">
-            {{ item.defaultPrice | currency }}
-        </template>
 
-        <template #column-schoolPrice="{ item }">
-            <sw-number-field
-                v-model:value="item.schoolPrice"
-                :min="0"
-                :step="0.01"
-                number-type="float"
-            />
-        </template>
+    <template #smart-bar-actions>
 
-    </sw-data-grid>
-
-    <sw-empty-state
-        v-else
-        title="No products found"
-    />
-
-    <template #footer>
         <sw-button
-            v-if="products.length"
             variant="primary"
             @click="savePrices"
         >
             Save Prices
         </sw-button>
+
     </template>
 
-</sw-card>
+
+
+    <template #content>
+
+
+        <sw-card title="Products">
+
+
+            <sw-data-grid
+
+                v-if="filteredProducts.length"
+
+                :data-source="filteredProducts"
+
+                :columns="columns"
+
+                :show-selection="false"
+
+                :show-actions="false"
+
+                :is-loading="isLoading"
+
+            >
+
+
+                <template #column-name="{ item }">
+
+                    {{ item.translated?.name || item.name }}
+
+                </template>
+
+
+
+                <template #column-productNumber="{ item }">
+
+                    {{ item.productNumber }}
+
+                </template>
+
+
+
+                <template #column-defaultPrice="{ item }">
+
+                    {{ item.defaultPrice | currency }}
+
+                </template>
+
+
+
+                <template #column-schoolPrice="{ item }">
+
+                <div class="school-price-control">
+
+                    <input
+                        type="number"
+                        class="price-input"
+                        v-model.number="item.schoolPrice"
+                        min="0"
+                        step="1"
+                    />
+
+
+                </div>
+
+            </template>
+
+
+            </sw-data-grid>
+
+
+
+            <sw-empty-state
+
+                v-else
+
+                title="No products found"
+
+            />
+
+
+        </sw-card>
+
+
+    </template>
+
+</sw-page>

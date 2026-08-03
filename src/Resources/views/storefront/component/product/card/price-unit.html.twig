@@ -6,7 +6,8 @@
     {% if product.extensions.schoolPrice %}
 
         <div class="product-price">
-            {{ product.extensions.schoolPrice.price }}
+            {{ product.extensions.schoolPrice.price|currency }}
+            <h6>(Special Price)</h6>
         </div>
 
     {% else %}

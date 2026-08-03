@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SchoolPlugin\Core\Content\SchoolProductPrice\SchoolProductPriceEntity;
 use Symfony\Component\Routing\Attribute\Route;
+use Shopware\Core\Checkout\Cart\SalesChannel\CartService;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 
@@ -29,7 +30,8 @@ class SchoolPageController extends StorefrontController
         private readonly EntityRepository $schoolProductPriceRepository,
     
         private readonly ProductDetailRoute $productDetailRoute,
-        private readonly RequestStack $requestStack
+        private readonly RequestStack $requestStack,
+        private readonly CartService $cartService
     ) {
     }
 
@@ -56,22 +58,64 @@ class SchoolPageController extends StorefrontController
             ->first();
 
 
-        if (!$school) {
-            throw $this->createNotFoundException();
-        }
+            if (!$school) {
+                throw $this->createNotFoundException();
+            }
 
 
+
+            /*
+            * Store selected school
+            * Used later by cart price processor
+            */
+            $session = $this->requestStack->getSession();
+
+    if ($session) {
 
         /*
-         * Store selected school
-         * Used later by cart price processor
-         */
-        $this->requestStack
-            ->getSession()
-            ->set(
+        * User is entering a school store.
+        * If they were previously browsing the normal store,
+        * we'll clear the cart here.
+        */
+        $currentSchoolId = $session->get('selected_school_id');
+
+
+            /*
+            * Clear cart when:
+            * - entering first school
+            * - switching from one school to another
+            */
+            if ($currentSchoolId !== $schoolId) {
+
+                $cart = $this->cartService->getCart(
+                    $salesChannelContext->getToken(),
+                    $salesChannelContext
+                );
+
+
+                if ($cart->getLineItems()->count() > 0) {
+
+                    $this->cartService->removeItems(
+                        $cart,
+                        $cart->getLineItems()->getKeys(),
+                        $salesChannelContext
+                    );
+
+                }
+            }
+
+
+            $session->set(
+                'current_store',
+                'school'
+            );
+
+
+            $session->set(
                 'selected_school_id',
                 $schoolId
             );
+    }
 
 
 

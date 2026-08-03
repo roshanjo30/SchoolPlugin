@@ -7,6 +7,8 @@
             :data-source="schools"
             :columns="columns"
             :is-loading="isLoading"
+            :show-actions="true"
+
         >
 
             <template #column-schoolName="{ item }">
@@ -34,6 +36,14 @@
             >
                 {{ $tc('school.status.' + item.status) }}
             </sw-label>
+
+        </template>
+
+        <template #actions="{ item }">
+
+        <sw-context-menu-item @click="onRowClick(item)">
+            Edit
+        </sw-context-menu-item>
 
         </template>
 

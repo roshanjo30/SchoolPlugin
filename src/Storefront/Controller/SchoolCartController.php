@@ -2,7 +2,7 @@
 
 namespace SchoolPlugin\Storefront\Controller;
 
-use Shopware\Core\Checkout\Cart\CartBehavior;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Shopware\Core\Checkout\Cart\LineItem\LineItem;
 use Shopware\Core\Checkout\Cart\SalesChannel\CartService;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
@@ -15,7 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class SchoolCartController extends StorefrontController
 {
     public function __construct(
-        private readonly CartService $cartService
+        private readonly CartService $cartService,
+        private readonly RequestStack $requestStack
     ) {
     }
 
@@ -56,6 +57,12 @@ class SchoolCartController extends StorefrontController
             $lineItem,
             $context,
         );
+
+        $session = $this->requestStack->getSession();
+
+        if ($session) {
+            $session->remove('selected_school_id');
+        }
 
 
         return $this->redirectToRoute(

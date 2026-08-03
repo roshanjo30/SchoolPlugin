@@ -109,7 +109,7 @@
         </service>
 
         <service id="SchoolPlugin\Storefront\Controller\SchoolPageController"
-         public="true">
+                public="true">
 
             <argument type="service" id="school.repository"/>
 
@@ -122,6 +122,9 @@
 
             <argument type="service"
                 id="request_stack"/>
+
+            <argument type="service"
+                id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
 
 
             <call method="setContainer">
@@ -163,10 +166,33 @@
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
+            <argument type="service"
+              id="request_stack"/>
 
             <tag name="controller.service_arguments"/>
 
         </service>
 
+
+        <service id="SchoolPlugin\Storefront\Subscriber\SchoolProductDetailSubscriber">
+
+            <argument type="service" id="school_product_price.repository"/>
+            <argument type="service" id="request_stack"/>
+
+            <tag name="kernel.event_subscriber"/>
+
+        </service>
+
+        <service id="SchoolPlugin\Storefront\Decorator\SchoolSuggestPageLoaderDecorator"
+                decorates="Shopware\Storefront\Page\Suggest\SuggestPageLoader">
+
+            <argument type="service"
+                    id="SchoolPlugin\Storefront\Decorator\SchoolSuggestPageLoaderDecorator.inner"/>
+
+            <argument type="service"
+                    id="school_product_price.repository"/>
+
+        </service>
+            
     </services>
 </container>

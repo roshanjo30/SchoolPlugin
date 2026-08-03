@@ -1,0 +1,19 @@
+{% sw_extends '@Storefront/storefront/component/buy-widget/buy-widget-price.html.twig' %}
+
+
+{% block buy_widget_price_inner %}
+
+    {% if page.extensions.schoolPrice %}
+
+        <div class="product-price">
+            {{ page.extensions.schoolPrice.price|currency }} 
+            <h5>(School Special Price)</h5>
+        </div>
+
+    {% else %}
+
+        {{ parent() }}
+
+    {% endif %}
+
+{% endblock %}

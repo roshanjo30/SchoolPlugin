@@ -1,0 +1,22 @@
+{% sw_extends '@Storefront/storefront/layout/header/search-suggest.html.twig' %}
+
+
+{% block layout_search_suggest_result_price %}
+
+    <div class="col-auto search-suggest-product-price">
+
+        {% if product.extensions.schoolPrice %}
+
+            <span class="search-suggest-product-price">
+                {{ product.extensions.schoolPrice.price|currency }}
+            </span>
+
+        {% else %}
+
+            {{ parent() }}
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}
