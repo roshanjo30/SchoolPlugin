@@ -13,9 +13,17 @@
             "city": "City",
             "status": "Status"
         },
+        "notifications": {
+            "successTitle": "Success",
+            "errorTitle": "Error",
+            "saveSuccess": "School status saved successfully.",
+            "saveError": "Could not save school."
+        },
 
         "detail": {
             "title": "School Details",
+            "general": "General Information",
+            "address": "Address",
             "schoolName": "School Name",
             "contactPerson": "Contact Person",
             "email": "Email",
@@ -39,7 +47,9 @@
         "actions": {
             "approve": "Approve",
             "disable": "Disable",
-            "back": "Back"
+            "back": "Back",
+            "save": "Save",
+            "cancel": "Cancel"
         },
 
         "status": {

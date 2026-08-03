@@ -1,6 +1,6 @@
 import template from './school-detail.html.twig';
 
-const { Component } = Shopware;
+const { Component, Mixin } = Shopware;
 
 Component.register('school-detail', {
     template,
@@ -9,12 +9,16 @@ Component.register('school-detail', {
         'repositoryFactory',
     ],
 
+    mixins: [
+        Mixin.getByName('notification'),
+    ],
+
     data() {
         return {
             school: null,
+            originalStatus: null,
+            selectedStatus: null,
             isLoading: false,
-            actionMessage: '',
-            actionVariant: 'success',
         };
     },
 
@@ -25,6 +29,19 @@ Component.register('school-detail', {
 
         schoolId() {
             return this.$route.params.id;
+        },
+
+        statusOptions() {
+            return [
+                {
+                    label: this.$tc('school.status.disabled'),
+                    value: 'disabled',
+                },
+                {
+                    label: this.$tc('school.status.approved'),
+                    value: 'approved',
+                },
+            ];
         },
     },
 
@@ -45,21 +62,6 @@ Component.register('school-detail', {
             };
         },
 
-        notify(variant, title, message) {
-            this.actionMessage = message;
-            this.actionVariant = variant;
-
-            try {
-                Shopware.State.dispatch('notification/createNotification', {
-                    variant,
-                    title,
-                    message,
-                });
-            } catch (error) {
-                console.warn('Toast notification failed, using inline message only', error);
-            }
-        },
-
         async loadSchool() {
             this.isLoading = true;
             try {
@@ -70,48 +72,59 @@ Component.register('school-detail', {
                     Shopware.Context.api,
                     criteria
                 );
+
+                this.selectedStatus = this.school.status;
+                this.originalStatus = this.school.status;
             } catch (error) {
                 console.error('Could not load school', error);
-                this.notify('error', 'Error', 'Could not load school.');
+                this.createNotificationError({
+                    title: 'Error',
+                    message: 'Could not load school.',
+                });
             } finally {
                 this.isLoading = false;
             }
         },
 
-        async approveSchool() {
+        async saveSchool() {
             this.isLoading = true;
+
             try {
-                await this.getHttpClient().post(
-                    `_action/school/${this.school.id}/approve`,
-                    {},
-                    { headers: this.getAuthHeaders() }
-                );
-                this.notify('success', 'Success', 'School approved successfully.');
-                await this.loadSchool();
+                if (this.selectedStatus !== this.originalStatus) {
+                    if (this.selectedStatus === 'approved') {
+                        await this.getHttpClient().post(
+                            `_action/school/${this.school.id}/approve`,
+                            {},
+                            { headers: this.getAuthHeaders() }
+                        );
+                    } else if (this.selectedStatus === 'disabled') {
+                        await this.getHttpClient().post(
+                            `_action/school/${this.school.id}/disable`,
+                            {},
+                            { headers: this.getAuthHeaders() }
+                        );
+                    }
+
+                    await this.loadSchool();
+                }
+
+                this.createNotificationSuccess({
+                    title: this.$tc('school.notifications.successTitle'),
+                    message: this.$tc('school.notifications.saveSuccess'),
+                });
             } catch (error) {
-                console.error('Could not approve school', error.response?.data || error);
-                this.notify('error', 'Error', 'Could not approve school.');
+                console.error(error);
+                this.createNotificationError({
+                    title: this.$tc('school.notifications.errorTitle'),
+                    message: this.$tc('school.notifications.saveError'),
+                });
             } finally {
                 this.isLoading = false;
             }
         },
 
-        async disableSchool() {
-            this.isLoading = true;
-            try {
-                await this.getHttpClient().post(
-                    `_action/school/${this.school.id}/disable`,
-                    {},
-                    { headers: this.getAuthHeaders() }
-                );
-                this.notify('success', 'Success', 'School disabled successfully.');
-                await this.loadSchool();
-            } catch (error) {
-                console.error('Could not disable school', error.response?.data || error);
-                this.notify('error', 'Error', 'Could not disable school.');
-            } finally {
-                this.isLoading = false;
-            }
+        cancelEdit() {
+            this.$router.push({ name: 'school.plugin.listing' });
         },
     },
 });

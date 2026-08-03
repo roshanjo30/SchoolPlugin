@@ -1,0 +1,43 @@
+{
+    "schoolPlugin": {
+        "validation": {
+            "contactPerson": "Bitte geben Sie eine Kontaktperson ein.",
+            "schoolName": "Bitte geben Sie einen Schulnamen ein.",
+            "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+            "country": "Bitte wählen Sie ein Land aus.",
+            "logo": "Bitte laden Sie ein Schullogo hoch."
+            },
+        "storefront": {
+            "school": {
+                "welcome": "Willkommen im %schoolName% Shop.",
+                "orderProducts": "Bestellen Sie unten Ihre offiziellen Schulprodukte.",
+                "productsTitle": "Schulprodukte",
+                "noProducts": "Für diese Schule sind noch keine Produkte verfügbar."
+            },
+            "registration": {
+                "title": "Schulanmeldung",
+                "schoolName": "Schulname",
+                "contactPerson": "Ansprechpartner",
+                "email": "E-Mail",
+                "phone": "Telefon",
+                "street": "Straße",
+                "zipcode": "Postleitzahl",
+                "city": "Stadt",
+                "country": "Land",
+                "selectCountry": "Land auswählen",
+                "logo": "Schullogo",
+                "comments": "Kommentare",
+                "submit": "Absenden"
+            },
+            "invitation": {
+                "title": "Eltern zu %schoolName% einladen",
+                "parentName": "Name der Eltern",
+                "parentNamePlaceholder": "Namen der Eltern eingeben",
+                "parentEmail": "E-Mail der Eltern",
+                "parentEmailPlaceholder": "E-Mail der Eltern eingeben",
+                "submit": "Eltern einladen"
+            }
+           
+        }
+    }
+}

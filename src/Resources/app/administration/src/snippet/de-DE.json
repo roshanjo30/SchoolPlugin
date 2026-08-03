@@ -14,9 +14,18 @@
             "status": "Status"
         },
 
+        "notifications": {
+            "successTitle": "Erfolg",
+            "errorTitle": "Fehler",
+            "saveSuccess": "Schulstatus erfolgreich gespeichert.",
+            "saveError": "Schulstatus konnte nicht gespeichert werden."
+        },
+
         "detail": {
             "title": "Schuldetails",
             "schoolName": "Schulname",
+            "general": "Allgemeine Informationen",
+            "address": "Adresse",
             "contactPerson": "Ansprechpartner",
             "email": "E-Mail",
             "phone": "Telefon",
@@ -39,7 +48,9 @@
         "actions": {
             "approve": "Freigeben",
             "disable": "Deaktivieren",
-            "back": "Zurück"
+            "back": "Zurück",
+            "save": "Speichern",
+            "cancel": "Abbrechen"
         },
 
         "status": {

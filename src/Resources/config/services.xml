@@ -9,6 +9,7 @@
         <service id="SchoolPlugin\Storefront\Controller\SchoolController" public="true">
             <argument type="service" id="country.repository"/>
             <argument type="service" id="SchoolPlugin\Service\SchoolRegistrationService"/>
+         
 
             <call method="setContainer">
                 <argument type="service" id="service_container"/>

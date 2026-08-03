@@ -1,0 +1,43 @@
+{
+    "schoolPlugin": {
+        "validation": {
+            "contactPerson": "Please enter a contact person.",
+            "schoolName": "Please enter a school name.",
+            "email": "Please enter a valid email address.",
+            "country": "Please select a country.",
+            "logo": "Please upload a school logo."
+        },
+        "storefront": {
+            "school": {
+                "welcome": "Welcome to the %schoolName% shop.",
+                "orderProducts": "Order your official school products below.",
+                "productsTitle": "School Products",
+                "noProducts": "No products available for this school yet."
+            },
+            "registration": {
+                "title": "School Registration",
+                "schoolName": "School Name",
+                "contactPerson": "Contact Person",
+                "email": "Email",
+                "phone": "Phone",
+                "street": "Street",
+                "zipcode": "ZIP Code",
+                "city": "City",
+                "country": "Country",
+                "selectCountry": "Select country",
+                "logo": "School Logo",
+                "comments": "Comments",
+                "submit": "Submit"
+            },
+            "invitation": {
+                "title": "Invite parents to %schoolName%",
+                "parentName": "Parent name",
+                "parentNamePlaceholder": "Enter parent's name",
+                "parentEmail": "Parent email",
+                "parentEmailPlaceholder": "Enter parent's email",
+                "submit": "Invite parent"
+            }
+            
+        }
+    }
+}

@@ -19,18 +19,20 @@
             </h1>
 
             <p class="lead">
-                Welcome to the {{ school.schoolName }} shop.
+                {{ "schoolPlugin.storefront.school.welcome"|trans({
+                    '%schoolName%': school.schoolName
+                }) }}
             </p>
 
             <p>
-                Order your official school products below.
+                {{ "schoolPlugin.storefront.school.orderProducts"|trans }}
             </p>
 
         </div>
     </div>
 
     <h2 class="mb-4">
-        School Products
+        {{ "schoolPlugin.storefront.school.productsTitle"|trans }}
     </h2>
 
     <div class="row cms-listing-row js-listing-wrapper">
@@ -45,7 +47,7 @@
             </div>
         {% else %}
             <div class="alert alert-info">
-                No products available for this school yet.
+                {{ "schoolPlugin.storefront.school.noProducts"|trans }}
             </div>
         {% endfor %}
 

@@ -17,7 +17,7 @@ Module.register('school-plugin', {
 
     color: '#189eff',
 
-    icon: 'regular-school',
+    icon: 'regular-books',
 
     snippets: {
         'en-GB': enGB,
@@ -51,7 +51,7 @@ Module.register('school-plugin', {
         {
             group: 'plugins',
             to: 'school.plugin.listing',
-            icon: 'regular-school',
+            icon: 'regular-books',
             label: 'school.general.mainMenuItem',
         },
     ],

@@ -89,12 +89,9 @@ class SchoolAdminController
         }
 
         $domain = $salesChannel->getDomains()?->first()?->getUrl();
-        $categoryUrl = rtrim($domain ?? '', '/') . '/navigation/' . $categoryId;
+        $categoryUrl = rtrim($domain ?? '', '/') . '/school-category/' . $categoryId;
 
-       
-        /*
-         * Dispatch Flow event
-         */
+    
         $this->eventDispatcher->dispatch(
             new SchoolApprovedEvent(
                 $context,

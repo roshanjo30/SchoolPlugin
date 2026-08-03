@@ -198,4 +198,21 @@ class SchoolPageController extends StorefrontController
             ]
         );
     }
+
+    #[Route(
+        path: '/school-category/{categoryId}',
+        name: 'frontend.school.category',
+        methods: ['GET'],
+        defaults: ['_routeScope' => ['storefront']]
+    )]
+    public function schoolCategory(
+        string $categoryId
+    ): Response {
+        return $this->redirectToRoute(
+            'frontend.navigation.page',
+            [
+                'navigationId' => $categoryId,
+            ]
+        );
+    }
 }

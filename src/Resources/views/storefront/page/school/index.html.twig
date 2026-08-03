@@ -1,97 +1,167 @@
-{% sw_extends '@Storefront/storefront/base.html.twig' %}
+{% sw_extends '@Storefront/storefront/base.html.twig' %} 
 
 {% block base_content %}
+<style>
+.school-registration-form.was-validated .form-control:valid,
+.school-registration-form.was-validated .form-select:valid {
+    background-image: none !important;
+    background-size: 0 0 !important;
+    border-color: var(--bs-border-color) !important;
+    box-shadow: none !important;
+    padding-right: .75rem !important;
+}
+</style>
 <div class="container py-5">
 
-    <h1 class="mb-4">School Registration</h1>
+    <h1 class="mb-4">
+        {{ "schoolPlugin.storefront.registration.title"|trans }}
+    </h1>
 
-    <form method="post"
-          enctype="multipart/form-data"
-          action="{{ path('frontend.school.registration.submit') }}">
-
+   <form method="post"
+      enctype="multipart/form-data"
+      action="{{ path('frontend.school.registration.submit') }}"
+      data-form-validation="true"
+      class="school-registration-form"
+      novalidate>
+      
         <div class="row">
 
             <div class="col-md-6 mb-3">
-                <label>School Name *</label>
+                <label>
+                    {{ "schoolPlugin.storefront.registration.schoolName"|trans }} *
+                </label>
                 <input type="text"
-                       class="form-control"
-                       name="schoolName"
-                       required>
+                        class="form-control"
+                        name="schoolName"
+                        required
+                        data-validation="required">
+
+                    <div class="invalid-feedback">
+                        {{ "schoolPlugin.validation.schoolName"|trans }}
+                    </div>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label>Contact Person *</label>
+                <label>
+                    {{ "schoolPlugin.storefront.registration.contactPerson"|trans }} *
+                </label>
                 <input type="text"
-                       class="form-control"
-                       name="contactPerson"
-                       required>
+                        class="form-control"
+                        name="contactPerson"
+                        required
+                        data-validation="required">
+
+                    <div class="invalid-feedback">
+                        {{ "schoolPlugin.validation.contactPerson"|trans }}
+                    </div>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label>Email *</label>
-                <input type="email"
-                       class="form-control"
-                       name="email"
-                       required>
+                <label>
+                    {{ "schoolPlugin.storefront.registration.email"|trans }} *
+                </label>
+            <input type="email"
+                        class="form-control"
+                        name="email"
+                        required
+                        data-validation="email">
+
+                    <div class="invalid-feedback">
+                        {{ "schoolPlugin.validation.email"|trans }}
+                    </div>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label>Phone</label>
+                <label>
+                    {{ "schoolPlugin.storefront.registration.phone"|trans }}
+                </label>
                 <input type="text"
                        class="form-control"
                        name="phone">
             </div>
 
             <div class="col-md-6 mb-3">
-                <label>Street</label>
+                <label>
+                    {{ "schoolPlugin.storefront.registration.street"|trans }}
+                </label>
                 <input type="text"
                        class="form-control"
                        name="street">
             </div>
 
             <div class="col-md-3 mb-3">
-                <label>ZIP Code</label>
+                <label>
+                    {{ "schoolPlugin.storefront.registration.zipcode"|trans }}
+                </label>
                 <input type="text"
                        class="form-control"
                        name="zipcode">
             </div>
 
             <div class="col-md-3 mb-3">
-                <label>City</label>
+                <label>
+                    {{ "schoolPlugin.storefront.registration.city"|trans }}
+                </label>
                 <input type="text"
                        class="form-control"
                        name="city">
             </div>
 
             <div class="col-md-6 mb-3">
-                <label>Country *</label>
 
-                <select class="form-select"
-                        name="countryId"
-                        required>
+            <label for="countryId">
+                {{ "schoolPlugin.storefront.registration.country"|trans }} *
+            </label>
 
-                    <option value="">Select country</option>
+            <select class="form-select"
+                    id="countryId"
+                    name="countryId"
+                    required="required"
+                    data-validation="required">
 
-                    {% for country in countries %}
-                        <option value="{{ country.id }}">
-                            {{ country.translated.name }}
-                        </option>
-                    {% endfor %}
+                <option value="">
+                    {{ "schoolPlugin.storefront.registration.selectCountry"|trans }}
+                </option>
 
-                </select>
+                {% for country in countries %}
+                    <option value="{{ country.id }}">
+                        {{ country.translated.name }}
+                    </option>
+                {% endfor %}
+
+            </select>
+
+            <div class="invalid-feedback">
+                {{ "schoolPlugin.validation.country"|trans }}
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label>School Logo *</label>
-                <input type="file"
-                       class="form-control"
-                       name="logo"
-                       accept=".jpg,.jpeg,.png,.svg"
-                       required>
+        </div>
+
+
+        <div class="col-md-6 mb-3">
+
+            <label for="logo">
+                {{ "schoolPlugin.storefront.registration.logo"|trans }} *
+            </label>
+
+            <input type="file"
+                id="logo"
+                class="form-control"
+                name="logo"
+                accept=".jpg,.jpeg,.png,.svg"
+                required="required"
+                data-validation="required">
+
+            <div class="invalid-feedback">
+                {{ "schoolPlugin.validation.logo"|trans }}
             </div>
+
+        </div>
 
             <div class="col-12 mb-3">
-                <label>Comments</label>
+                <label>
+                    {{ "schoolPlugin.storefront.registration.comments"|trans }}
+                </label>
 
                 <textarea class="form-control"
                           rows="5"
@@ -101,10 +171,10 @@
         </div>
 
         <button class="btn btn-primary">
-            Submit
+            {{ "schoolPlugin.storefront.registration.submit"|trans }}
         </button>
 
     </form>
 
 </div>
-{% endblock %}
+{% endblock %} 

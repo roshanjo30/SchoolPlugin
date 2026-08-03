@@ -21,7 +21,6 @@ class SchoolController extends StorefrontController
     private readonly EntityRepository $countryRepository,
     private readonly \SchoolPlugin\Service\SchoolRegistrationService $schoolRegistrationService
         
-
     ) {
     }
 
