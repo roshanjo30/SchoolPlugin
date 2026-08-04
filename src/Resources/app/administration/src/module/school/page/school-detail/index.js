@@ -8,7 +8,6 @@ Component.register('school-detail', {
     inject: [
         'repositoryFactory',
     ],
-
     mixins: [
         Mixin.getByName('notification'),
     ],
@@ -122,7 +121,6 @@ Component.register('school-detail', {
                 this.isLoading = false;
             }
         },
-
         cancelEdit() {
             this.$router.push({ name: 'school.plugin.listing' });
         },

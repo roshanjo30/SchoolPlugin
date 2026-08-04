@@ -67,7 +67,6 @@ Component.register('school-list', {
             this.isLoading = false;
         },
     
-    
         onRowClick(school) {
             this.$router.push({
                 name: 'school.plugin.detail',

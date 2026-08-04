@@ -11,8 +11,6 @@ use Shopware\Storefront\Controller\StorefrontController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 
 #[Route(defaults: ['_routeScope' => ['storefront']])]
 class SchoolController extends StorefrontController
@@ -20,7 +18,6 @@ class SchoolController extends StorefrontController
     public function __construct(
     private readonly EntityRepository $countryRepository,
     private readonly \SchoolPlugin\Service\SchoolRegistrationService $schoolRegistrationService
-        
     ) {
     }
 
@@ -64,12 +61,10 @@ class SchoolController extends StorefrontController
             $request->files->get('logo'),
             $context->getContext()
         );
-    
         $this->addFlash(
             'success',
-            'Your school registration has been submitted successfully.'
+            $this->trans('schoolPlugin.storefront.registration.success')
         );
-    
         return $this->redirectToRoute(
             'frontend.school.registration'
         );

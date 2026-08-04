@@ -5,7 +5,6 @@ namespace SchoolPlugin\Storefront\Controller;
 use SchoolPlugin\Event\SchoolParentInvitedEvent;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Event\EventData\MailRecipientStruct;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
@@ -36,15 +35,13 @@ class ParentInvitationController extends StorefrontController
         Request $request,
         SalesChannelContext $salesChannelContext
     ): RedirectResponse {
-        $context = $salesChannelContext->getContext();
 
+        $context = $salesChannelContext->getContext();
         $school = $this->schoolRepository
             ->search(new Criteria([$schoolId]), $context)
             ->first();
-
         if ($school === null) {
             $this->addFlash('danger', 'School not found.');
-
             return $this->redirect(
                 $request->headers->get('referer') ?? '/'
             );
@@ -52,10 +49,8 @@ class ParentInvitationController extends StorefrontController
 
         $parentName = trim((string) $request->request->get('parentName'));
         $email = trim((string) $request->request->get('email'));
-
         if ($parentName === '') {
             $this->addFlash('danger', 'Parent name is required.');
-
             return $this->redirect(
                 $request->headers->get('referer') ?? '/'
             );
@@ -63,14 +58,12 @@ class ParentInvitationController extends StorefrontController
 
         if ($email === '') {
             $this->addFlash('danger', 'Email is required.');
-
             return $this->redirect(
                 $request->headers->get('referer') ?? '/'
             );
         }
 
         $token = bin2hex(random_bytes(32));
-
         $this->schoolParentInvitationRepository->create([
             [
                 'id' => Uuid::randomHex(),
@@ -82,42 +75,32 @@ class ParentInvitationController extends StorefrontController
         ], $context);
 
         $salesChannelId = $salesChannelContext->getSalesChannelId();
-
         $salesChannel = $this->salesChannelRepository
             ->search(new Criteria([$salesChannelId]), $context)
             ->first();
-
             $domain = '';
-
             if ($salesChannel !== null && $salesChannel->getDomains()) {
                 $domain = rtrim(
                     $salesChannel->getDomains()->first()->getUrl(),
                     '/'
                 );
             }
-            
             if ($domain === '') {
                 $domain = $request->getSchemeAndHttpHost();
             }
-
+            
         $parentCategoryId = $school->getParentCategoryId();
-    
-
         if (!$parentCategoryId) {
             $this->addFlash('danger', 'Parent category not found.');
-
             return $this->redirect(
                 $request->headers->get('referer') ?? '/'
             );
         }
 
         $categoryUrl = $domain . '/school/invite/' . $token;
-
         $mailRecipients = new MailRecipientStruct([
             $email => $parentName,
         ]);
-
-
 
         $this->eventDispatcher->dispatch(
             new SchoolParentInvitedEvent(

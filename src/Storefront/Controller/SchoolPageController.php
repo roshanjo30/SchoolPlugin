@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Shopware\Core\Checkout\Cart\SalesChannel\CartService;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-
 #[Route(defaults: ['_routeScope' => ['storefront']])]
 class SchoolPageController extends StorefrontController
 {
@@ -46,9 +45,7 @@ class SchoolPageController extends StorefrontController
     ): Response {
 
         $context = $salesChannelContext->getContext();
-
         $session = $this->requestStack->getSession();
-
         $token = $session?->get('school_invitation_token');
 
         if (!$token) {
@@ -62,48 +59,39 @@ class SchoolPageController extends StorefrontController
             )
             ->first();
 
-            if (!$school) {
-                throw $this->createNotFoundException();
-            }
+        if (!$school) {
+            throw $this->createNotFoundException();
+        }
+        $session = $this->requestStack->getSession();
 
-            $session = $this->requestStack->getSession();
-
-    if ($session) {
-
-    
-        $currentSchoolId = $session->get('selected_school_id');
-
-            if ($currentSchoolId !== $schoolId) {
-                $cart = $this->cartService->getCart(
-                    $salesChannelContext->getToken(),
-                    $salesChannelContext
-                );
-
-                if ($cart->getLineItems()->count() > 0) {
-
-                    $this->cartService->removeItems(
-                        $cart,
-                        $cart->getLineItems()->getKeys(),
+        if ($session) {
+            $currentSchoolId = $session->get('selected_school_id');
+                if ($currentSchoolId !== $schoolId) {
+                    $cart = $this->cartService->getCart(
+                        $salesChannelContext->getToken(),
                         $salesChannelContext
                     );
-
+                    if ($cart->getLineItems()->count() > 0) {
+                        $this->cartService->removeItems(
+                            $cart,
+                            $cart->getLineItems()->getKeys(),
+                            $salesChannelContext
+                        );
+                    }
                 }
-            }
 
-            $session->set(
-                'current_store',
-                'school'
-            );
+                $session->set(
+                    'current_store',
+                    'school'
+                );
 
-            $session->set(
-                'selected_school_id',
-                $schoolId
-            );
-    }
-
+                $session->set(
+                    'selected_school_id',
+                    $schoolId
+                );
+        }
 
         $priceCriteria = new Criteria();
-
         $priceCriteria->addFilter(
             new EqualsFilter(
                 'schoolId',
@@ -118,26 +106,17 @@ class SchoolPageController extends StorefrontController
             )
             ->getEntities();
 
-
         $schoolPriceMap = [];
-
 
         /** @var SchoolProductPriceEntity $schoolPrice */
         foreach ($schoolPrices as $schoolPrice) {
-
             $schoolPriceMap[$schoolPrice->getProductId()] =
                 $schoolPrice->getPrice();
-
         }
 
         $products = [];
-
         if ($school->getCategoryId()) {
-
-
             $criteria = new Criteria();
-
-
             $criteria->addFilter(
                 new EqualsFilter(
                     'categories.id',
@@ -152,27 +131,19 @@ class SchoolPageController extends StorefrontController
                 )
                 ->getIds();
 
-
             foreach ($productIds as $productId) {
-
                 $detailCriteria = new Criteria();
                 $detailCriteria->addAssociation(
                     'cover.media'
                 );
-
-
                 $detail = $this->productDetailRoute->load(
                     $productId,
                     $request,
                     $salesChannelContext,
                     $detailCriteria
                 );
-
                 $product = $detail->getProduct();
-
-
                 if (isset($schoolPriceMap[$productId])) {
-
                     $product->addExtension(
                         'schoolPrice',
                         new ArrayEntity([
@@ -183,11 +154,9 @@ class SchoolPageController extends StorefrontController
                             )
                         ])
                     );
-
                 }
                 $products[] = $product;
             }
-
         }
 
         return $this->renderStorefront(

@@ -1,5 +1,4 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %} 
-
 {% block base_content %}
 <style>
 .school-registration-form.was-validated .form-control:valid,
@@ -11,21 +10,18 @@
     padding-right: .75rem !important;
 }
 </style>
-<div class="container py-5">
 
+<div class="container py-5">
     <h1 class="mb-4">
         {{ "schoolPlugin.storefront.registration.title"|trans }}
     </h1>
-
    <form method="post"
       enctype="multipart/form-data"
       action="{{ path('frontend.school.registration.submit') }}"
       data-form-validation="true"
       class="school-registration-form"
       novalidate>
-      
         <div class="row">
-
             <div class="col-md-6 mb-3">
                 <label>
                     {{ "schoolPlugin.storefront.registration.schoolName"|trans }} *
@@ -50,7 +46,6 @@
                         name="contactPerson"
                         required
                         data-validation="required">
-
                     <div class="invalid-feedback">
                         {{ "schoolPlugin.validation.contactPerson"|trans }}
                     </div>
@@ -60,12 +55,11 @@
                 <label>
                     {{ "schoolPlugin.storefront.registration.email"|trans }} *
                 </label>
-            <input type="email"
+                <input type="email"
                         class="form-control"
                         name="email"
                         required
                         data-validation="email">
-
                     <div class="invalid-feedback">
                         {{ "schoolPlugin.validation.email"|trans }}
                     </div>
@@ -134,12 +128,9 @@
             <div class="invalid-feedback">
                 {{ "schoolPlugin.validation.country"|trans }}
             </div>
-
         </div>
 
-
         <div class="col-md-6 mb-3">
-
             <label for="logo">
                 {{ "schoolPlugin.storefront.registration.logo"|trans }} *
             </label>
@@ -167,14 +158,11 @@
                           rows="5"
                           name="comment"></textarea>
             </div>
-
         </div>
 
         <button class="btn btn-primary">
             {{ "schoolPlugin.storefront.registration.submit"|trans }}
         </button>
-
     </form>
-
 </div>
 {% endblock %} 

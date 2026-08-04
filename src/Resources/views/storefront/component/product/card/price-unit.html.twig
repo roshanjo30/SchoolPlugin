@@ -1,19 +1,11 @@
 {% sw_extends '@Storefront/storefront/component/product/card/price-unit.html.twig' %}
-
-
 {% block component_product_box_price %}
-
     {% if product.extensions.schoolPrice %}
-
         <div class="product-price">
             {{ product.extensions.schoolPrice.price|currency }}
-            <h6>(Special Price)</h6>
+            <h6>{{ 'schoolPlugin.storefront.product.schoolSpecialPrice'|trans }}</h6>
         </div>
-
     {% else %}
-
         {{ parent() }}
-
     {% endif %}
-
 {% endblock %}

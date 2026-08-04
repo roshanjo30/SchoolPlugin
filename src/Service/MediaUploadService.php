@@ -21,14 +21,12 @@ class MediaUploadService
         Context $context
     ): string {
         $mediaId = bin2hex(random_bytes(16));
-    
         $this->mediaRepository->create([
             [
                 'id' => $mediaId,
                 'private' => false,
             ]
         ], $context);
-    
     
         $mediaFile = new MediaFile(
             $file->getPathname(),
@@ -37,18 +35,13 @@ class MediaUploadService
             $file->getSize()
         );
     
-    
         $uniqueFilename = 'school_logo_' . $mediaId;
-    
-    
         $this->fileSaver->persistFileToMedia(
             $mediaFile,
             $uniqueFilename,
             $mediaId,
             $context
         );
-    
-    
         return $mediaId;
     }
 }

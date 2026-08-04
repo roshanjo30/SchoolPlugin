@@ -37,9 +37,6 @@ class FlowInstaller
 
         $now = (new \DateTime())->format('Y-m-d H:i:s');
 
-        /*
-         * Get mail template
-         */
         $mailTemplateId = $this->connection->fetchOne(
             "
             SELECT mt.id
@@ -56,9 +53,6 @@ class FlowInstaller
             );
         }
 
-        /*
-         * Create flow
-         */
         $this->connection->insert(
             'flow',
             [
@@ -71,9 +65,6 @@ class FlowInstaller
             ]
         );
 
-        /*
-         * Mail action
-         */
         $this->connection->insert(
             'flow_sequence',
             [
@@ -115,12 +106,8 @@ class FlowInstaller
 
         $flowId = Uuid::randomBytes();
         $sequenceId = Uuid::randomBytes();
-
         $now = (new \DateTime())->format('Y-m-d H:i:s');
 
-        /*
-         * Get mail template
-         */
         $mailTemplateId = $this->connection->fetchOne(
             "
             SELECT mt.id
@@ -137,9 +124,6 @@ class FlowInstaller
             );
         }
 
-        /*
-         * Create flow
-         */
         $this->connection->insert(
             'flow',
             [
@@ -152,9 +136,6 @@ class FlowInstaller
             ]
         );
 
-        /*
-         * Mail action
-         */
         $this->connection->insert(
             'flow_sequence',
             [
@@ -203,9 +184,6 @@ class FlowInstaller
             return;
         }
 
-        /*
-         * Delete sequences first
-         */
         $this->connection->delete(
             'flow_sequence',
             [
@@ -213,9 +191,6 @@ class FlowInstaller
             ]
         );
 
-        /*
-         * Delete flow
-         */
         $this->connection->delete(
             'flow',
             [

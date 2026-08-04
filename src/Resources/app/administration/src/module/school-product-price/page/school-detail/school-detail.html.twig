@@ -1,78 +1,46 @@
 <sw-page>
-
     <template #smart-bar-header>
-
         <h2>
             School Product Prices
         </h2>
 
     </template>
 
-
     <template #smart-bar-actions>
-
         <sw-button
             variant="primary"
             @click="savePrices"
         >
             Save Prices
         </sw-button>
-
     </template>
 
-
-
     <template #content>
-
-
         <sw-card title="Products">
-
-
             <sw-data-grid
-
                 v-if="filteredProducts.length"
-
                 :data-source="filteredProducts"
-
                 :columns="columns"
-
                 :show-selection="false"
-
                 :show-actions="false"
-
                 :is-loading="isLoading"
-
             >
 
 
-                <template #column-name="{ item }">
+            <template #column-name="{ item }">
+                {{ item.translated?.name || item.name }}
+            </template>
 
-                    {{ item.translated?.name || item.name }}
+            <template #column-productNumber="{ item }">
+                {{ item.productNumber }}
+            </template>
 
-                </template>
+            <template #column-defaultPrice="{ item }">
+                {{ item.defaultPrice | currency }}
+            </template>
 
-
-
-                <template #column-productNumber="{ item }">
-
-                    {{ item.productNumber }}
-
-                </template>
-
-
-
-                <template #column-defaultPrice="{ item }">
-
-                    {{ item.defaultPrice | currency }}
-
-                </template>
-
-
-
-                <template #column-schoolPrice="{ item }">
-
+            <template #column-schoolPrice="{ item }">
                 <div class="school-price-control">
-
                     <input
                         type="number"
                         class="price-input"
@@ -80,29 +48,15 @@
                         min="0"
                         step="1"
                     />
-
-
                 </div>
-
             </template>
-
 
             </sw-data-grid>
 
-
-
             <sw-empty-state
-
                 v-else
-
                 title="No products found"
-
             />
-
-
         </sw-card>
-
-
     </template>
-
 </sw-page>

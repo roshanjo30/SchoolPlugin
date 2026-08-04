@@ -9,18 +9,14 @@
         <service id="SchoolPlugin\Storefront\Controller\SchoolController" public="true">
             <argument type="service" id="country.repository"/>
             <argument type="service" id="SchoolPlugin\Service\SchoolRegistrationService"/>
-         
-
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
         </service>
 
-
         <service id="SchoolPlugin\Core\Content\School\SchoolDefinition">
             <tag name="shopware.entity.definition" entity="school"/>
         </service>
-
 
         <service id="SchoolPlugin\Service\MediaUploadService">
             <argument type="service" id="media.repository"/>
@@ -32,8 +28,6 @@
             <argument type="service" id="SchoolPlugin\Service\MediaUploadService"/>
         </service>
 
-
-
         <service id="SchoolPlugin\Service\SchoolCategoryService">
             <argument type="service" id="category.repository"/>
             <argument type="service" id="school.repository"/>
@@ -43,7 +37,6 @@
                 public="true"
                 autowire="false"
                 autoconfigure="false">
-
             <argument type="service" id="school.repository"/>
             <argument type="service" id="sales_channel.repository"/>
             <argument type="service" id="SchoolPlugin\Service\SchoolCategoryService"/>
@@ -76,26 +69,20 @@
             </call>
         </service>
 
-
         <service id="SchoolPlugin\Core\Content\SchoolParentInvitation\SchoolParentInvitationDefinition">
             <tag name="shopware.entity.definition"
                 entity="school_parent_invitation"/>
         </service>
 
-
         <service id="SchoolPlugin\Storefront\Controller\ParentInvitationController"
                 public="true">
-
             <argument type="service" id="school.repository"/>
             <argument type="service" id="school_parent_invitation.repository"/>
             <argument type="service" id="sales_channel.repository"/>
-
             <argument type="service" id="event_dispatcher"/>
-
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
-
             <tag name="controller.service_arguments"/>
         </service>
 
@@ -103,43 +90,30 @@
             <tag name="shopware.entity.definition" entity="school_product_price"/>
         </service>
                     
-
         <service id="SchoolPlugin\Subscriber\SchoolCategoryPageSubscriber">
             <argument type="service" id="school.repository"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
         <service id="SchoolPlugin\Storefront\Controller\SchoolPageController"
                 public="true">
-
             <argument type="service" id="school.repository"/>
-
             <argument type="service" id="product.repository"/>
-
             <argument type="service" id="school_product_price.repository"/>
-
             <argument type="service"
                 id="Shopware\Core\Content\Product\SalesChannel\Detail\ProductDetailRoute"/>
-
             <argument type="service"
                 id="request_stack"/>
-
             <argument type="service"
                 id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
-
-
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
-
-
             <tag name="controller.service_arguments"/>
-
         </service>
             
-
-
-
         <service id="SchoolPlugin\Controller\Api\SchoolProductPriceController" public="true">
             <argument type="service" id="school_product_price.repository"/>
             <argument type="service" id="school.repository"/>
@@ -154,47 +128,34 @@
         <service id="SchoolPlugin\Checkout\SchoolPriceCartProcessor">
             <argument type="service" id="school_product_price.repository"/>
             <argument type="service" id="request_stack"/>
-
             <tag name="shopware.cart.processor" priority="1000"/>
         </service>
 
         <service id="SchoolPlugin\Storefront\Controller\SchoolCartController"
                 public="true">
-
             <argument type="service"
                     id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
-
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
             <argument type="service"
               id="request_stack"/>
-
             <tag name="controller.service_arguments"/>
-
         </service>
 
-
         <service id="SchoolPlugin\Storefront\Subscriber\SchoolProductDetailSubscriber">
-
             <argument type="service" id="school_product_price.repository"/>
             <argument type="service" id="request_stack"/>
-
             <tag name="kernel.event_subscriber"/>
-
         </service>
 
         <service id="SchoolPlugin\Storefront\Decorator\SchoolSuggestPageLoaderDecorator"
                 decorates="Shopware\Storefront\Page\Suggest\SuggestPageLoader">
-
             <argument type="service"
                     id="SchoolPlugin\Storefront\Decorator\SchoolSuggestPageLoaderDecorator.inner"/>
-
             <argument type="service"
                     id="school_product_price.repository"/>
-
         </service>
-
 
         <service id="SchoolPlugin\Storefront\Controller\SchoolInvitationController"
          public="true">
@@ -202,7 +163,6 @@
             <argument type="service" id="school.repository"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
-
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>

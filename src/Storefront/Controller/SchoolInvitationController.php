@@ -32,18 +32,14 @@ class SchoolInvitationController extends StorefrontController
         string $token,
         SalesChannelContext $salesChannelContext
     ): RedirectResponse {
-
         $criteria = new Criteria();
-
         $criteria->addFilter(
             new EqualsFilter(
                 'token',
                 $token
             )
         );
-
         $criteria->addAssociation('school');
-
         $invitation = $this->schoolParentInvitationRepository
             ->search(
                 $criteria,
@@ -54,7 +50,6 @@ class SchoolInvitationController extends StorefrontController
         if (!$invitation) {
             throw $this->createNotFoundException();
         }
-
         $school = $this->schoolRepository
             ->search(
                 new Criteria([$invitation->getSchoolId()]),
@@ -69,30 +64,25 @@ class SchoolInvitationController extends StorefrontController
         if ($school->getStatus() !== 'approved') {
             throw $this->createNotFoundException();
         }
-
         $cart = $this->cartService->getCart(
             $salesChannelContext->getToken(),
             $salesChannelContext
         );
         
         if ($cart->getLineItems()->count() > 0) {
-        
             $this->cartService->removeItems(
                 $cart,
                 $cart->getLineItems()->getKeys(),
                 $salesChannelContext
             );
-        
         }
         
-        
         $session = $this->requestStack->getSession();
-        
         $session->set(
             'selected_school_id',
             $school->getId()
         );
-
+        
         $session->set(
             'school_invitation_token',
             $token

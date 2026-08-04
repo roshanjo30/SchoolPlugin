@@ -6,11 +6,13 @@ use SchoolPlugin\Core\Content\School\SchoolEntity;
 use SchoolPlugin\Event\SchoolApprovedEvent;
 use SchoolPlugin\Service\SchoolCategoryService;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Event\EventData\MailRecipientStruct;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Shopware\Core\Defaults;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[Route(defaults: ['_routeScope' => ['api']])]
@@ -43,23 +45,12 @@ class SchoolAdminController
         }
 
         $categoryId = $school->getCategoryId();
-
         if (!$categoryId) {
             $categoryId = $this->schoolCategoryService
                 ->createCategory($school, $context);
-        
-            /*
-             * Update entity in memory
-             * for event/mail usage
-             */
             $school->setCategoryId($categoryId);
         
         } else {
-        
-            /*
-             * Existing school:
-             * Reactivate categories
-             */
             $this->schoolCategoryService
                 ->createCategory($school, $context);
         }
@@ -71,27 +62,22 @@ class SchoolAdminController
             ]
         ], $context);
 
-        /*
-         * Get sales channel + domain for Flow event
-         */
-        $salesChannelCriteria = new Criteria();
-        $salesChannelCriteria->addAssociation('domains');
-        $salesChannelCriteria->setLimit(1);
+        $criteria = new Criteria();
+        $criteria->addAssociation('domains');
+        $criteria->addFilter(new EqualsFilter('typeId', \Shopware\Core\Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
+        $criteria->setLimit(1);
 
-        $salesChannel = $this->salesChannelRepository
-            ->search($salesChannelCriteria, $context)
-            ->first();
+        $salesChannel = $this->salesChannelRepository->search($criteria, $context)->first();
 
         if (!$salesChannel) {
             return new JsonResponse([
-                'error' => 'No sales channel found'
+                'error' => 'No storefront sales channel found',
             ], 500);
         }
-
+        
         $domain = $salesChannel->getDomains()?->first()?->getUrl();
         $categoryUrl = rtrim($domain ?? '', '/') . '/school-category/' . $categoryId;
-
-    
+        
         $this->eventDispatcher->dispatch(
             new SchoolApprovedEvent(
                 $context,
@@ -131,7 +117,6 @@ class SchoolAdminController
         }
 
         $categoryId = $school->getCategoryId();
-
         if ($categoryId) {
             $this->schoolCategoryService
                 ->deactivateCategory($categoryId, $context);
@@ -144,7 +129,6 @@ class SchoolAdminController
             ]],
             $context
         );
-
         return new JsonResponse([
             'success' => true,
         ]);

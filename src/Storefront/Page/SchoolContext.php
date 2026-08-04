@@ -8,13 +8,10 @@ class SchoolContext
 {
     private ?string $schoolId = null;
 
-
     public function __construct(
         private readonly RequestStack $requestStack
     ) {
     }
-
-
     public function setSchoolId(string $schoolId): void
     {
         $session = $this->requestStack
@@ -25,8 +22,6 @@ class SchoolContext
             $schoolId
         );
     }
-
-
     public function getSchoolId(): ?string
     {
         return $this->requestStack

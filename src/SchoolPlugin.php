@@ -15,35 +15,31 @@ class SchoolPlugin extends Plugin
     public function install(InstallContext $context): void
     {
         parent::install($context);
-
         $connection = $this->container->get(Connection::class);
-
         (new MailTemplateInstaller($connection))->install();
         (new FlowInstaller($connection))->install();
     }
 
-    
-
     public function uninstall(UninstallContext $context): void
     {
         parent::uninstall($context);
-
         if ($context->keepUserData()) {
             return;
         }
 
         $connection = $this->container->get(Connection::class);
-
-        $categoryIds = $connection->fetchFirstColumn(
-            'SELECT LOWER(HEX(category_id))
-             FROM school
-             WHERE category_id IS NOT NULL'
-        );
+        $schemaManager = $connection->createSchemaManager();
+        $categoryIds = [];
+        if ($schemaManager->tablesExist(['school'])) {
+            $categoryIds = $connection->fetchFirstColumn(
+                'SELECT LOWER(HEX(category_id))
+                FROM school
+                WHERE category_id IS NOT NULL'
+            );
+        }
         
         $categoryRepository = $this->container->get('category.repository');
-        
         foreach ($categoryIds as $categoryId) {
-        
             $children = $connection->fetchFirstColumn(
                 'SELECT LOWER(HEX(id))
                  FROM category
@@ -58,23 +54,18 @@ class SchoolPlugin extends Plugin
             }
         
             $delete[] = ['id' => $categoryId];
-        
             $categoryRepository->delete(
                 $delete,
                 Context::createDefaultContext()
             );
         }
-
+        
         (new FlowInstaller($connection))->uninstall();
         (new MailTemplateInstaller($connection))->uninstall();
-
-          // Drop plugin tables
         $connection->executeStatement('SET FOREIGN_KEY_CHECKS = 0');
-
         $connection->executeStatement('DROP TABLE IF EXISTS `school_product_price`');
         $connection->executeStatement('DROP TABLE IF EXISTS `school_parent_invitation`');
         $connection->executeStatement('DROP TABLE IF EXISTS `school`');
-
         $connection->executeStatement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

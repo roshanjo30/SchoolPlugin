@@ -4,14 +4,12 @@ namespace SchoolPlugin\Storefront\Decorator;
 
 use Shopware\Storefront\Page\Suggest\SuggestPageLoader;
 use Shopware\Storefront\Page\Suggest\SuggestPage;
-use Shopware\Storefront\Page\Suggest\SuggestPageLoaderInterface;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\HttpFoundation\Request;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Struct\ArrayEntity;
-
 
 class SchoolSuggestPageLoaderDecorator extends SuggestPageLoader
 {
@@ -20,7 +18,6 @@ class SchoolSuggestPageLoaderDecorator extends SuggestPageLoader
         private readonly EntityRepository $schoolProductPriceRepository
     ) {
     }
-
 
     public function load(
         Request $request,
@@ -32,28 +29,19 @@ class SchoolSuggestPageLoaderDecorator extends SuggestPageLoader
             $salesChannelContext
         );
 
-
         $session = $request->getSession();
-
-
         if (!$session) {
             return $page;
         }
 
-
         $schoolId = $session->get('selected_school_id');
-
 
         if (!$schoolId) {
             return $page;
         }
 
-
         foreach ($page->getSearchResult()->getEntities() as $product) {
-
-
             $criteria = new Criteria();
-
             $criteria->addFilter(
                 new EqualsFilter(
                     'schoolId',
@@ -68,7 +56,6 @@ class SchoolSuggestPageLoaderDecorator extends SuggestPageLoader
                 )
             );
 
-
             $schoolPrice = $this->schoolProductPriceRepository
                 ->search(
                     $criteria,
@@ -76,11 +63,9 @@ class SchoolSuggestPageLoaderDecorator extends SuggestPageLoader
                 )
                 ->first();
 
-
             if (!$schoolPrice) {
                 continue;
             }
-
 
             $product->addExtension(
                 'schoolPrice',
@@ -89,8 +74,6 @@ class SchoolSuggestPageLoaderDecorator extends SuggestPageLoader
                 ])
             );
         }
-
-
         return $page;
     }
 }

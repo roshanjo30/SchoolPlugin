@@ -1,85 +1,51 @@
 <sw-page>
-
-
     <template #content>
-
         <sw-card
             title="Schools"
         >
-
             <sw-data-grid
-
                 v-if="schools.length"
-
                 :data-source="schools"
-
                 :columns="[
-
                     {
                         property: 'schoolName',
                         label: 'School Name',
                         primary: true
                     },
-
                     {
                         property: 'contactPerson',
                         label: 'Contact Person'
                     },
-
                     {
                         property: 'email',
                         label: 'Email'
                     }
-
                 ]"
-
                 :show-actions="true"
-
                 :is-loading="isLoading"
 
             >
 
 
-                <template #column-schoolName="{ item }">
+            <template #column-schoolName="{ item }">
+                <a href="#" @click.prevent="openSchool(item)">
+                    {{ item.schoolName }}
+                </a>
+            </template>
 
-                    <a
-                        href="#"
-                        @click.prevent="openSchool(item)"
-                    >
-                        {{ item.schoolName }}
-                    </a>
-
-                </template>
-
-
-                <template #actions="{ item }">
-
-                    <sw-context-menu-item
-                        @click="openSchool(item)"
-                    >
-
-                        Manage products
-
-                    </sw-context-menu-item>
-
-                </template>
-
+            <template #actions="{ item }">
+                <sw-context-menu-item @click="openSchool(item)">
+                    Manage products
+                </sw-context-menu-item>
+            </template>
 
             </sw-data-grid>
 
-
             <sw-empty-state
-
                 v-else
-
                 title="No schools found"
-
             />
 
-
         </sw-card>
-
     </template>
-
-
 </sw-page>

@@ -20,7 +20,6 @@ class SchoolRegistrationService
         Context $context
     ): void {
         $logoMediaId = null;
-
         if ($logo instanceof UploadedFile) {
             $logoMediaId = $this->mediaUploadService->upload(
                 $logo,

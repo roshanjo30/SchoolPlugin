@@ -65,7 +65,7 @@ final class SchoolApprovedEvent extends Event implements
             'school' => $this->schoolData,
         ];
     }
-
+    
     public function getContext(): Context
     {
         return $this->context;

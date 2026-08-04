@@ -28,23 +28,19 @@ class SchoolProductPriceDefinition extends EntityDefinition
         return self::ENTITY_NAME;
     }
 
-
     public function getEntityClass(): string
     {
         return SchoolProductPriceEntity::class;
     }
-
 
     public function getCollectionClass(): string
     {
         return SchoolProductPriceCollection::class;
     }
 
-
     protected function defineFields(): FieldCollection
     {
         return new FieldCollection([
-
 
             (new IdField(
                 'id',
@@ -53,8 +49,6 @@ class SchoolProductPriceDefinition extends EntityDefinition
                 new PrimaryKey(),
                 new Required()
             ),
-
-
 
             (new FkField(
                 'school_id',
@@ -69,36 +63,24 @@ class SchoolProductPriceDefinition extends EntityDefinition
                 ProductDefinition::class
             )),
 
-
-
             new ReferenceVersionField(
                 ProductDefinition::class,
                 'product_version_id'
             ),
-
-
 
             new FloatField(
                 'price',
                 'price'
             ),
 
-
-
             new BoolField(
                 'active',
                 'active'
             ),
 
-
-
             new CreatedAtField(),
 
-
             new UpdatedAtField(),
-
-
-
 
             new ManyToOneAssociationField(
                 'school',
@@ -107,8 +89,6 @@ class SchoolProductPriceDefinition extends EntityDefinition
                 'id',
                 false
             ),
-
-
 
             new ManyToOneAssociationField(
                 'product',

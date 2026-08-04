@@ -1,138 +1,139 @@
 <sw-page>
-
     <template #content>
-
         <sw-card
             v-if="school"
             :title="$tc('school.detail.title')"
         >
-
-            <sw-card
-                :title="$tc('school.detail.general')"
-                class="school-detail-card"
+        <sw-card
+            :title="$tc('school.detail.general')"
+            class="school-detail-card"
+        >
+            <sw-container
+                columns="1fr 1fr"
+                gap="24px"
             >
 
-                <sw-container
-                    columns="1fr 1fr"
-                    gap="24px"
-                >
-
-                    <sw-text-field
-                        :label="$tc('school.detail.schoolName')"
-                        :value="school.schoolName"
-                        disabled
-                    />
-
-                    <sw-text-field
-                        :label="$tc('school.detail.contactPerson')"
-                        :value="school.contactPerson"
-                        disabled
-                    />
-
-                    <sw-text-field
-                        :label="$tc('school.detail.email')"
-                        :value="school.email"
-                        disabled
-                    />
-
-                    <sw-text-field
-                        :label="$tc('school.detail.phone')"
-                        :value="school.phone"
-                        disabled
-                    />
-
-                </sw-container>
-
-            </sw-card>
-
-
-            <sw-card
-                :title="$tc('school.detail.address')"
-                class="school-detail-card"
-            >
-
-                <sw-container
-                    columns="1fr 1fr"
-                    gap="24px"
-                >
-
-                    <sw-text-field
-                        :label="$tc('school.detail.street')"
-                        :value="school.street"
-                        disabled
-                    />
-
-                    <sw-text-field
-                        :label="$tc('school.detail.zipcode')"
-                        :value="school.zipcode"
-                        disabled
-                    />
-
-                    <sw-text-field
-                        :label="$tc('school.detail.city')"
-                        :value="school.city"
-                        disabled
-                    />
-
-                </sw-container>
-
-            </sw-card>
-
-
-            <sw-card
-                v-if="school.logoMedia"
-                :title="$tc('school.detail.logo')"
-                class="school-detail-card"
-            >
-
-                <img
-                    :src="school.logoMedia.url"
-                    style="
-                        max-width:200px;
-                        max-height:200px;
-                        object-fit:contain;
-                    "
+                <sw-text-field
+                    :label="$tc('school.detail.schoolName')"
+                    :value="school.schoolName"
+                    disabled
                 />
 
-            </sw-card>
-
-
-            <sw-card
-                :title="$tc('school.detail.comment')"
-                class="school-detail-card"
-            >
-
-                <div
-                    style="
-                        min-height:120px;
-                        padding:16px;
-                        background:#f5f5f5;
-                        border-radius:4px;
-                        white-space:pre-wrap;
-                        word-break:break-word;
-                    "
-                >
-                    {{ school.comment || '-' }}
-                </div>
-
-            </sw-card>
-
-
-            <sw-card
-                :title="$tc('school.detail.status')"
-                class="school-detail-card"
-            >
-
-                <sw-single-select
-                    v-model:value="selectedStatus"
-                    :options="statusOptions"
+                <sw-text-field
+                    :label="$tc('school.detail.contactPerson')"
+                    :value="school.contactPerson"
+                    disabled
                 />
 
-            </sw-card>
+                <sw-text-field
+                    :label="$tc('school.detail.email')"
+                    :value="school.email"
+                    disabled
+                />
+
+                <sw-text-field
+                    :label="$tc('school.detail.phone')"
+                    :value="school.phone"
+                    disabled
+                />
+
+            </sw-container>
+
+        </sw-card>
 
 
-            <template #footer>
+        <sw-card
+            :title="$tc('school.detail.address')"
+            class="school-detail-card"
+        >
 
+            <sw-container
+                columns="1fr 1fr"
+                gap="24px"
+            >
+
+                <sw-text-field
+                    :label="$tc('school.detail.street')"
+                    :value="school.street"
+                    disabled
+                />
+
+                <sw-text-field
+                    :label="$tc('school.detail.zipcode')"
+                    :value="school.zipcode"
+                    disabled
+                />
+
+                <sw-text-field
+                    :label="$tc('school.detail.city')"
+                    :value="school.city"
+                    disabled
+                />
+
+            </sw-container>
+
+        </sw-card>
+
+
+        <sw-card
+            v-if="school.logoMedia"
+            :title="$tc('school.detail.logo')"
+            class="school-detail-card"
+        >
+
+            <img
+                :src="school.logoMedia.url"
+                style="
+                    max-width:200px;
+                    max-height:200px;
+                    object-fit:contain;
+                "
+            />
+
+        </sw-card>
+
+
+        <sw-card
+            :title="$tc('school.detail.comment')"
+            class="school-detail-card"
+        >
+
+            <div
+                style="
+                    min-height:120px;
+                    padding:16px;
+                    background:#f5f5f5;
+                    border-radius:4px;
+                    white-space:pre-wrap;
+                    word-break:break-word;
+                "
+            >
+                {{ school.comment || '-' }}
+            </div>
+
+        </sw-card>
+
+
+        <sw-card
+            :title="$tc('school.detail.status')"
+            class="school-detail-card"
+        >
+
+            <sw-single-select
+                v-model:value="selectedStatus"
+                :options="statusOptions"
+            />
+
+        </sw-card>
+
+
+        <template #footer>
+            <div
+                style="
+                    display: flex;
+                    gap: 12px;
+                "
+            >
                 <sw-button
                     variant="secondary"
                     :disabled="isLoading"
@@ -140,7 +141,6 @@
                 >
                     {{ $tc('school.actions.cancel') }}
                 </sw-button>
-
 
                 <sw-button
                     variant="primary"
@@ -150,9 +150,8 @@
                 >
                     {{ $tc('school.actions.save') }}
                 </sw-button>
-
-
-            </template>
+            </div>
+        </template>
 
         </sw-card>
 

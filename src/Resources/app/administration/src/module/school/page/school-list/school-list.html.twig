@@ -9,22 +9,13 @@
             :is-loading="isLoading"
             :show-actions="true"
 
-        >
-
-            <template #column-schoolName="{ item }">
-
-                <a
-                    href="#"
-                    @click.prevent="onRowClick(item)"
-                >
-                    {{ item.schoolName }}
-                </a>
-
-            </template>
+        >  
+        <template #column-schoolName="{ item }">
+        <a href="#" @click.prevent="onRowClick(item)"> {{ item.schoolName }} </a>
+        </template>
 
 
-            <template #column-status="{ item }">
-
+        <template #column-status="{ item }">
             <sw-label
                 :variant="
                     item.status === 'approved'
@@ -40,16 +31,16 @@
         </template>
 
         <template #actions="{ item }">
-
-        <sw-context-menu-item @click="onRowClick(item)">
-            Edit
-        </sw-context-menu-item>
-
+            <sw-context-menu-item @click="onRowClick(item)">
+                Edit
+            </sw-context-menu-item>
         </template>
 
-
         </sw-data-grid>
-
+        <sw-empty-state
+            v-else-if="!isLoading"
+            :title="$tc('school.list.emptyTitle')"
+            :subline="$tc('school.list.emptyDescription')"
+        />
     </template>
-
 </sw-page>

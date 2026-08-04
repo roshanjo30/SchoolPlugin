@@ -14,6 +14,9 @@
                 "productsTitle": "Schulprodukte",
                 "noProducts": "Für diese Schule sind noch keine Produkte verfügbar."
             },
+            "product": {
+                "schoolSpecialPrice": "(Schulsonderpreis)"
+            },
             "registration": {
                 "title": "Schulanmeldung",
                 "schoolName": "Schulname",
@@ -27,7 +30,8 @@
                 "selectCountry": "Land auswählen",
                 "logo": "Schullogo",
                 "comments": "Kommentare",
-                "submit": "Absenden"
+                "submit": "Absenden",
+                "success": "Ihre Schulregistrierung wurde erfolgreich übermittelt."
             },
             "invitation": {
                 "title": "Eltern zu %schoolName% einladen",
@@ -36,7 +40,11 @@
                 "parentEmail": "E-Mail der Eltern",
                 "parentEmailPlaceholder": "E-Mail der Eltern eingeben",
                 "submit": "Eltern einladen"
+            },
+            "navigation": {
+                "schoolRegistration": "Schulregistrierung"
             }
+            
            
         }
     }

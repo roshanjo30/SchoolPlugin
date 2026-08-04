@@ -1,14 +1,12 @@
 {% sw_extends '@Storefront/storefront/layout/navbar/navbar.html.twig' %}
-
 {% block layout_navbar_menu_items %}
     {{ parent() }}
-
     <li class="nav-item">
         <a class="nav-link root main-navigation-link p-2 no-dropdown"
            href="{{ path('frontend.school.registration') }}"
            title="School Registration">
             <span class="main-navigation-link-text">
-                School Registration
+                {{ 'schoolPlugin.storefront.navigation.schoolRegistration'|trans }}
             </span>
         </a>
     </li>

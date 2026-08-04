@@ -50,9 +50,6 @@ class MailTemplateInstaller
         $mailTemplateId = Uuid::randomBytes();
         $now = (new \DateTime())->format('Y-m-d H:i:s');
 
-        /*
-         * Mail template type
-         */
         $this->connection->insert('mail_template_type', [
             'id' => $mailTemplateTypeId,
             'technical_name' => 'school_approved',
@@ -63,10 +60,6 @@ class MailTemplateInstaller
             'created_at' => $now,
         ]);
 
-        /*
-         * Mail template type translations (the "name" shown in the admin
-         * list comes from here, NOT from the mail_template_type row itself)
-         */
         foreach ($languages as $language) {
             $name = $language['code'] === 'de-DE'
                 ? 'Schule genehmigt'
@@ -80,9 +73,6 @@ class MailTemplateInstaller
             ]);
         }
 
-        /*
-         * Base mail template
-         */
         $this->connection->insert('mail_template', [
             'id' => $mailTemplateId,
             'mail_template_type_id' => $mailTemplateTypeId,
@@ -126,7 +116,6 @@ class MailTemplateInstaller
                 ';
             } else {
                 $subject = 'Your school has been approved';
-
                 $html = '
                     <p>Hello {{ school.contactPerson }},</p>
 
@@ -252,15 +241,15 @@ class MailTemplateInstaller
                     ';
 
                     $plain = '
-        Hallo {{ parentName }},
+                        Hallo {{ parentName }},
 
-        Sie wurden eingeladen, Produkte für {{ schoolName }} zu bestellen.
+                        Sie wurden eingeladen, Produkte für {{ schoolName }} zu bestellen.
 
-        Link:
-        {{ categoryUrl }}
+                        Link:
+                        {{ categoryUrl }}
 
-        Viele Grüße
-        ';
+                        Viele Grüße
+                        ';
 
                 } else {
 
@@ -288,16 +277,16 @@ class MailTemplateInstaller
                     ';
 
                     $plain = '
-        Hello {{ parentName }},
+                        Hello {{ parentName }},
 
-        You have been invited to order products for {{ schoolName }}.
+                        You have been invited to order products for {{ schoolName }}.
 
-        Please use the following link:
+                        Please use the following link:
 
-        {{ categoryUrl }}
+                        {{ categoryUrl }}
 
-        Regards
-        ';
+                        Regards
+                        ';
                 }
 
                 $this->connection->insert(

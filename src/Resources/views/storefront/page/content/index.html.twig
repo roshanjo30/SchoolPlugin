@@ -1,13 +1,8 @@
 {% sw_extends '@Storefront/storefront/page/content/index.html.twig' %}
-
 {% block page_content %}
-
     {{ parent() }}
-
     {% if page.category.extensions.school is defined and page.category.extensions.school %}
-
         <div class="school-parent-invitation container mt-5 mb-5">
-
             <h2>
                 {{ "schoolPlugin.storefront.invitation.title"|trans({
                     '%schoolName%': page.category.extensions.school.schoolName
@@ -18,12 +13,10 @@
                   action="{{ path('frontend.school.invite.parent', {
                       schoolId: page.category.extensions.school.id
                   }) }}">
-
                 <div class="mb-3">
                     <label class="form-label">
                         {{ "schoolPlugin.storefront.invitation.parentName"|trans }}
                     </label>
-
                     <input
                         class="form-control"
                         type="text"
@@ -31,7 +24,7 @@
                         placeholder="{{ 'schoolPlugin.storefront.invitation.parentNamePlaceholder'|trans }}"
                         required>
                 </div>
-
+                
                 <div class="mb-3">
                     <label class="form-label">
                         {{ "schoolPlugin.storefront.invitation.parentEmail"|trans }}
@@ -48,11 +41,7 @@
                 <button class="btn btn-primary">
                     {{ "schoolPlugin.storefront.invitation.submit"|trans }}
                 </button>
-
             </form>
-
         </div>
-
     {% endif %}
-
 {% endblock %}

@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-
 #[Route(defaults: ['_routeScope' => ['api']])]
 class SchoolProductPriceController
 {
@@ -30,7 +29,6 @@ class SchoolProductPriceController
     ) {
     }
 
-
     #[Route(
         path: '/api/_action/school-product-price/save',
         name: 'api.action.school_product_price.save',
@@ -40,12 +38,10 @@ class SchoolProductPriceController
         Request $request,
         Context $context
     ): JsonResponse {
-
         $payload = json_decode(
             $request->getContent(),
             true
         );
-
 
         if (
             empty($payload['schoolId'])
@@ -57,21 +53,14 @@ class SchoolProductPriceController
             ], 400);
         }
 
-
-
         foreach ($payload['prices'] as $price) {
-
-
             $criteria = new Criteria();
-
-
             $criteria->addFilter(
                 new EqualsFilter(
                     'schoolId',
                     $payload['schoolId']
                 )
             );
-
 
             $criteria->addFilter(
                 new EqualsFilter(
@@ -80,15 +69,12 @@ class SchoolProductPriceController
                 )
             );
 
-
             $criteria->addFilter(
                 new EqualsFilter(
                     'productVersionId',
                     Defaults::LIVE_VERSION
                 )
             );
-
-
 
             /** @var SchoolProductPriceEntity|null $existing */
             $existing = $this->schoolProductPriceRepository
@@ -98,11 +84,7 @@ class SchoolProductPriceController
                 )
                 ->first();
 
-
-
             if ($existing) {
-
-
                 $this->schoolProductPriceRepository->update(
                     [
                         [
@@ -114,42 +96,27 @@ class SchoolProductPriceController
                     $context
                 );
 
-
             } else {
-
-
                 $this->schoolProductPriceRepository->create(
                     [
                         [
-
                             'id' => Uuid::randomHex(),
-
                             'schoolId' => $payload['schoolId'],
-
                             'productId' => $price['productId'],
-
                             'productVersionId' => Defaults::LIVE_VERSION,
-
                             'price' => (float)$price['price'],
-
                             'active' => true
                         ]
                     ],
                     $context
                 );
-
             }
-
         }
-
-
 
         return new JsonResponse([
             'success' => true
         ]);
     }
-
-
 
 
     #[Route(
@@ -162,17 +129,13 @@ class SchoolProductPriceController
         Context $context
     ): JsonResponse {
 
-
         $criteria = new Criteria();
-
-
         $criteria->addFilter(
             new EqualsFilter(
                 'schoolId',
                 $schoolId
             )
         );
-
 
         $criteria->addFilter(
             new EqualsFilter(
@@ -181,8 +144,6 @@ class SchoolProductPriceController
             )
         );
 
-
-
         $prices = $this->schoolProductPriceRepository
             ->search(
                 $criteria,
@@ -190,40 +151,20 @@ class SchoolProductPriceController
             )
             ->getEntities();
 
-
-
         $result = [];
-
-
-
         /** @var SchoolProductPriceEntity $price */
         foreach ($prices as $price) {
-
-
             $result[] = [
-
                 'id' => $price->getId(),
-
                 'schoolId' => $price->getSchoolId(),
-
                 'productId' => $price->getProductId(),
-
                 'price' => $price->getPrice(),
-
                 'active' => $price->isActive()
-
             ];
 
         }
-
-
         return new JsonResponse($result);
-
     }
-
-
-
-
 
     #[Route(
         path: '/api/_action/school-product-price/products/{schoolId}',
@@ -235,7 +176,6 @@ class SchoolProductPriceController
         Context $context
     ): JsonResponse {
 
-
         $school = $this->schoolRepository
             ->search(
                 new Criteria([$schoolId]),
@@ -243,20 +183,11 @@ class SchoolProductPriceController
             )
             ->first();
 
-
-
         if (!$school || !$school->getCategoryId()) {
-
             return new JsonResponse([]);
-
         }
 
-
-
-
         $salesChannelCriteria = new Criteria();
-
-
         $salesChannelCriteria->addFilter(
             new EqualsFilter(
                 'typeId',
@@ -264,11 +195,7 @@ class SchoolProductPriceController
             )
         );
 
-
         $salesChannelCriteria->setLimit(1);
-
-
-
         $salesChannel = $this->salesChannelRepository
             ->search(
                 $salesChannelCriteria,
@@ -276,16 +203,9 @@ class SchoolProductPriceController
             )
             ->first();
 
-
-
         if (!$salesChannel) {
-
             return new JsonResponse([]);
-
         }
-
-
-
 
         $salesChannelContext =
             $this->salesChannelContextFactory->create(
@@ -293,19 +213,13 @@ class SchoolProductPriceController
                 $salesChannel->getId()
             );
 
-
-
-
         $existingPriceCriteria = new Criteria();
-
-
         $existingPriceCriteria->addFilter(
             new EqualsFilter(
                 'schoolId',
                 $schoolId
             )
         );
-
 
         $existingPriceCriteria->addFilter(
             new EqualsFilter(
@@ -314,8 +228,6 @@ class SchoolProductPriceController
             )
         );
 
-
-
         $existingPrices =
             $this->schoolProductPriceRepository
                 ->search(
@@ -323,29 +235,18 @@ class SchoolProductPriceController
                     $context
                 )
                 ->getEntities();
-
-
-
         $savedPriceByProductId = [];
 
 
 
         /** @var SchoolProductPriceEntity $existingPrice */
         foreach ($existingPrices as $existingPrice) {
-
             $savedPriceByProductId[
                 $existingPrice->getProductId()
             ] = $existingPrice->getPrice();
-
         }
 
-
-
-
-
         $criteria = new Criteria();
-
-
         $criteria->addFilter(
             new EqualsFilter(
                 'categories.id',
@@ -353,26 +254,16 @@ class SchoolProductPriceController
             )
         );
 
-
         $products = $this->productRepository
             ->search(
                 $criteria,
                 $context
             )
             ->getEntities();
-
-
-
-
         $result = [];
-
-
 
         /** @var ProductEntity $product */
         foreach ($products as $product) {
-
-
-
             $detail = $this->productDetailRoute->load(
                 $product->getId(),
                 new Request(),
@@ -380,44 +271,26 @@ class SchoolProductPriceController
                 new Criteria()
             );
 
-
-
             $detailProduct = $detail->getProduct();
-
-
             $calculatedPrice =
                 $detailProduct
                     ->getCalculatedPrice()
                     ?->getUnitPrice() ?? 0;
-
-
-
             $result[] = [
 
                 'id' => $product->getId(),
-
                 'name' =>
                     $product->getTranslation('name')
                     ?? $product->getName(),
-
                 'productNumber' =>
                     $product->getProductNumber(),
-
-
                 'defaultPrice' =>
                     $calculatedPrice,
-
-
                 'schoolPrice' =>
                     $savedPriceByProductId[$product->getId()]
                     ?? $calculatedPrice
-
             ];
-
         }
-
-
-
         return new JsonResponse($result);
 
     }

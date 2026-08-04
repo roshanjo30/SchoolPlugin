@@ -26,7 +26,6 @@ class SchoolEntity extends Entity
 
     protected ?string $countryId = null;
 
-
     protected ?string $logoMediaId = null;
 
     protected ?MediaEntity $logoMedia = null;
@@ -163,7 +162,6 @@ class SchoolEntity extends Entity
     {
         return $this->categoryId;
     }
-
 
     public function setCategoryId(?string $categoryId): void
     {

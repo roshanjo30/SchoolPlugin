@@ -12,7 +12,6 @@ use Shopware\Core\Framework\Uuid\Uuid;
 class SchoolCategoryService
 {
     public const SCHOOLS_ROOT_CATEGORY_NAME = 'Schools';
-
     public function __construct(
         private readonly EntityRepository $categoryRepository,
         private readonly EntityRepository $schoolRepository
@@ -33,14 +32,8 @@ class SchoolCategoryService
             return $school->getCategoryId();
         }
     
-    
         $rootCategoryId = $this->ensureRootCategory($context);
-    
-        /*
-         * Create school category
-         */
         $categoryId = Uuid::randomHex();
-    
         $this->categoryRepository->create([[
             'id' => $categoryId,
             'parentId' => $rootCategoryId,
@@ -50,12 +43,7 @@ class SchoolCategoryService
             'mediaId' => $school->getLogoMediaId(),
         ]], $context);
     
-    
-        /*
-         * Create Parents sub-category
-         */
         $parentCategoryId = Uuid::randomHex();
-    
         $this->categoryRepository->create([[
             'id' => $parentCategoryId,
             'parentId' => $categoryId,
@@ -64,17 +52,12 @@ class SchoolCategoryService
             'visible' => false,
         ]], $context);
     
-    
-        /*
-         * Save both categories
-         */
         $this->schoolRepository->update([[
             'id' => $school->getId(),
             'categoryId' => $categoryId,
             'parentCategoryId' => $parentCategoryId,
         ]], $context);
-    
-    
+
         return $categoryId;
     }
 
@@ -92,11 +75,9 @@ class SchoolCategoryService
         ]], $context);
     }
 
-
     private function ensureRootCategory(Context $context): string
     {
         $criteria = new Criteria();
-
         $criteria->addFilter(
             new EqualsFilter(
                 'name',
@@ -112,28 +93,20 @@ class SchoolCategoryService
         );
 
         $criteria->setLimit(1);
-
-
         $existing = $this->categoryRepository
             ->search($criteria, $context)
             ->first();
-
-
         if ($existing) {
             return $existing->getId();
         }
 
-
         $rootId = Uuid::randomHex();
-
-
         $this->categoryRepository->create([[
             'id' => $rootId,
             'name' => self::SCHOOLS_ROOT_CATEGORY_NAME,
             'active' => true,
             'visible' => false,
         ]], $context);
-
 
         return $rootId;
     }

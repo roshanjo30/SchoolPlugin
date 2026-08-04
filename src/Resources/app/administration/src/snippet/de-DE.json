@@ -4,6 +4,10 @@
             "mainMenuItem": "Schulen",
             "title": "Schulverwaltung"
         },
+        "list": {
+            "emptyTitle": "Keine Schulen gefunden",
+            "emptyDescription": "Derzeit sind keine Schulregistrierungen vorhanden."
+        },
 
         "listing": {
             "schoolName": "Schulname",

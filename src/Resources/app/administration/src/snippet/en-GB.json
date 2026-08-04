@@ -4,6 +4,10 @@
             "mainMenuItem": "Schools",
             "title": "School Management"
         },
+        "list": {
+            "emptyTitle": "No schools found",
+            "emptyDescription": "There are currently no school registrations."
+        },
 
         "listing": {
             "schoolName": "School Name",

@@ -18,7 +18,6 @@ class SchoolProductDetailSubscriber implements EventSubscriberInterface
     ) {
     }
 
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -26,30 +25,22 @@ class SchoolProductDetailSubscriber implements EventSubscriberInterface
         ];
     }
 
-
     public function onProductPageLoaded(
         ProductPageLoadedEvent $event
     ): void {
 
         $session = $this->requestStack->getSession();
-
         if (!$session) {
             return;
         }
 
-
         $schoolId = $session->get('selected_school_id');
-
         if (!$schoolId) {
             return;
         }
 
-
         $product = $event->getPage()->getProduct();
-
-
         $criteria = new Criteria();
-
         $criteria->addFilter(
             new EqualsFilter(
                 'schoolId',
@@ -64,7 +55,6 @@ class SchoolProductDetailSubscriber implements EventSubscriberInterface
             )
         );
 
-
         $schoolPrice = $this->schoolProductPriceRepository
             ->search(
                 $criteria,
@@ -72,18 +62,10 @@ class SchoolProductDetailSubscriber implements EventSubscriberInterface
             )
             ->first();
 
-
         if (!$schoolPrice) {
             return;
         }
-
-
         $price = (float) $schoolPrice->getPrice();
-
-
-        /*
-         * Attach to PAGE, not product
-         */
         $event->getPage()->addExtension(
             'schoolPrice',
             new ArrayEntity([

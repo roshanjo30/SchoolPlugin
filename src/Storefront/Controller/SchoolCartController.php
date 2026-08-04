@@ -10,7 +10,6 @@ use Shopware\Storefront\Controller\StorefrontController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-
 #[Route(defaults: ['_routeScope' => ['storefront']])]
 class SchoolCartController extends StorefrontController
 {
@@ -19,7 +18,6 @@ class SchoolCartController extends StorefrontController
         private readonly RequestStack $requestStack
     ) {
     }
-
 
     #[Route(
         path: '/school/{schoolId}/add/{productId}',
@@ -36,19 +34,16 @@ class SchoolCartController extends StorefrontController
             $context->getToken(),
             $context
         );
-
         $lineItem = new LineItem(
             $productId,
             LineItem::PRODUCT_LINE_ITEM_TYPE,
             $productId,
             1
         );
-
         $lineItem->setPayloadValue(
             'schoolId',
             $schoolId
         );
-
         $this->cartService->add(
             $cart,
             $lineItem,

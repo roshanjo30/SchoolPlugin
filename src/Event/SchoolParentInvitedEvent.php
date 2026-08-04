@@ -51,7 +51,7 @@ final class SchoolParentInvitedEvent extends Event implements
     {
         return self::EVENT_NAME;
     }
-
+    
     /**
      * @return array<string, mixed>
      */

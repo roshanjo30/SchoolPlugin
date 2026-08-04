@@ -7,7 +7,6 @@ use Shopware\Core\Checkout\Cart\CartBehavior;
 use Shopware\Core\Checkout\Cart\CartProcessorInterface;
 use Shopware\Core\Checkout\Cart\LineItem\CartDataCollection;
 use Shopware\Core\Checkout\Cart\LineItem\LineItem;
-use Shopware\Core\Checkout\Cart\Price\Struct\CalculatedPrice;
 use Shopware\Core\Checkout\Cart\Price\Struct\QuantityPriceDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -23,7 +22,6 @@ class SchoolPriceCartProcessor implements CartProcessorInterface
     ) {
     }
 
-
     public function process(
         CartDataCollection $data,
         Cart $original,
@@ -33,36 +31,26 @@ class SchoolPriceCartProcessor implements CartProcessorInterface
     ): void {
 
         $session = $this->requestStack->getSession();
-
         if (!$session) {
             return;
         }
 
-
         $schoolId = $session->get('selected_school_id');
-
         if (!$schoolId) {
             return;
         }
 
-
         foreach ($toCalculate->getLineItems() as $lineItem) {
-
-
             if ($lineItem->getType() !== LineItem::PRODUCT_LINE_ITEM_TYPE) {
                 continue;
             }
 
-
             $productId = $lineItem->getReferencedId();
-
             if (!$productId) {
                 continue;
             }
 
-
             $criteria = new Criteria();
-
             $criteria->addFilter(
                 new EqualsFilter(
                     'schoolId',
@@ -77,7 +65,6 @@ class SchoolPriceCartProcessor implements CartProcessorInterface
                 )
             );
 
-
             $schoolPriceEntity = $this->schoolProductPriceRepository
                 ->search(
                     $criteria,
@@ -85,29 +72,17 @@ class SchoolPriceCartProcessor implements CartProcessorInterface
                 )
                 ->first();
 
-
             if (!$schoolPriceEntity) {
                 continue;
             }
 
-
             $schoolPrice = (float) $schoolPriceEntity->getPrice();
-
-
             $taxId = $lineItem->getPayloadValue('taxId');
-
-
             if (!$taxId) {
                 continue;
             }
 
-
             $taxRules = $context->buildTaxRules($taxId);
-
-
-            /*
-             * Replace product price definition
-             */
             $lineItem->setPriceDefinition(
                 new QuantityPriceDefinition(
                     $schoolPrice,
@@ -115,7 +90,6 @@ class SchoolPriceCartProcessor implements CartProcessorInterface
                     $lineItem->getQuantity()
                 )
             );
-
         }
     }
 }
