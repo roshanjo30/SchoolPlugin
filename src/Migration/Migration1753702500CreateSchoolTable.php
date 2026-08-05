@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `school` (
     `parent_category_id` BINARY(16) NULL,
 
     `comment` LONGTEXT NULL,
-    `status` VARCHAR(50) NOT NULL DEFAULT 'pending',
+    `status` VARCHAR(50) NOT NULL DEFAULT 'disabled',
     `created_at` DATETIME(3) NOT NULL,
     `updated_at` DATETIME(3) NULL,
 

@@ -44,7 +44,10 @@ class Migration1785401000CreateSchoolProductPriceTable extends MigrationStep
                 CONSTRAINT fk_school_product_price_product
                     FOREIGN KEY (product_id, product_version_id)
                     REFERENCES product(id, version_id)
-                    ON DELETE CASCADE
+                    ON DELETE CASCADE,
+
+                CONSTRAINT uniq_school_product_price
+                    UNIQUE (school_id, product_id)
 
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
         ');

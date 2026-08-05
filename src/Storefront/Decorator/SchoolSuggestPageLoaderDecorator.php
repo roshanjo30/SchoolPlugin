@@ -10,6 +10,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Struct\ArrayEntity;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 
 class SchoolSuggestPageLoaderDecorator extends SuggestPageLoader
 {
@@ -40,37 +41,55 @@ class SchoolSuggestPageLoaderDecorator extends SuggestPageLoader
             return $page;
         }
 
+        $productIds = [];
+
         foreach ($page->getSearchResult()->getEntities() as $product) {
-            $criteria = new Criteria();
-            $criteria->addFilter(
-                new EqualsFilter(
-                    'schoolId',
-                    $schoolId
-                )
-            );
+            $productIds[] = $product->getId();
+        }
 
-            $criteria->addFilter(
-                new EqualsFilter(
-                    'productId',
-                    $product->getId()
-                )
-            );
+        $productIds = array_values(array_unique($productIds));
 
-            $schoolPrice = $this->schoolProductPriceRepository
-                ->search(
-                    $criteria,
-                    $salesChannelContext->getContext()
-                )
-                ->first();
+        if (empty($productIds)) {
+            return $page;
+        }
 
-            if (!$schoolPrice) {
+        $criteria = new Criteria();
+
+        $criteria->addFilter(
+            new EqualsFilter(
+                'schoolId',
+                $schoolId
+            )
+        );
+
+        $criteria->addFilter(
+            new EqualsAnyFilter(
+                'productId',
+                $productIds
+            )
+        );
+
+        $prices = $this->schoolProductPriceRepository->search(
+            $criteria,
+            $salesChannelContext->getContext()
+        );
+
+        $priceMap = [];
+
+        /** @var \SchoolPlugin\Core\Content\SchoolProductPrice\SchoolProductPriceEntity $schoolPrice */
+        foreach ($prices as $schoolPrice) {
+            $priceMap[$schoolPrice->getProductId()] = (float) $schoolPrice->getPrice();
+        }
+
+        foreach ($page->getSearchResult()->getEntities() as $product) {
+            if (!isset($priceMap[$product->getId()])) {
                 continue;
             }
 
             $product->addExtension(
                 'schoolPrice',
                 new ArrayEntity([
-                    'price' => (float)$schoolPrice->getPrice()
+                    'price' => $priceMap[$product->getId()]
                 ])
             );
         }

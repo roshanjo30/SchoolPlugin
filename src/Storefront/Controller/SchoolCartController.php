@@ -50,10 +50,6 @@ class SchoolCartController extends StorefrontController
             $context,
         );
 
-        $session = $this->requestStack->getSession();
-        if ($session) {
-            $session->remove('selected_school_id');
-        }
 
         return $this->redirectToRoute(
             'frontend.checkout.cart.page'

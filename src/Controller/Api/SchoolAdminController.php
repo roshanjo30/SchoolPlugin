@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace SchoolPlugin\Controller;
+namespace SchoolPlugin\Controller\Api;
 
 use SchoolPlugin\Core\Content\School\SchoolEntity;
 use SchoolPlugin\Event\SchoolApprovedEvent;
@@ -29,7 +29,7 @@ class SchoolAdminController
     #[Route(
         path: '/api/_action/school/{id}/approve',
         name: 'api.action.school.approve',
-        methods: ['POST']
+        methods: ['POST']  
     )]
     public function approve(string $id, Context $context): JsonResponse
     {
@@ -100,6 +100,7 @@ class SchoolAdminController
         path: '/api/_action/school/{id}/disable',
         name: 'api.action.school.disable',
         methods: ['POST']
+        
     )]
     public function disable(
         string $id,

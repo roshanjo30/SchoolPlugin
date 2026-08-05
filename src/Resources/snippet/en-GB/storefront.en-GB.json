@@ -5,7 +5,11 @@
             "schoolName": "Please enter a school name.",
             "email": "Please enter a valid email address.",
             "country": "Please select a country.",
-            "logo": "Please upload a school logo."
+            "logo": "Please upload a school logo.",
+            "logoTooLarge": "The logo file is too large. Maximum size is 5 MB.",
+            "logoActiveContent": "The uploaded logo is invalid. SVG files with active content are not allowed.",
+            "invalidLogo": "The uploaded logo is invalid. SVG files with active content are not allowed.",
+            "generalError": "Something went wrong. Please try again later."
         },
         "storefront": {
             "school": {
@@ -31,9 +35,20 @@
                 "logo": "School Logo",
                 "comments": "Comments",
                 "submit": "Submit",
-                "success": "Your school registration has been submitted successfully."
+                "error": "An unexpected error occurred. Please try again later.",
+                "successTitle": "Registration submitted",
+                "success": "Thank you for your interest. Your school registration has been submitted successfully. We will review your request and contact you soon."
             },
             "invitation": {
+                "error": {
+                    "schoolNotFound": "School not found.",
+                    "parentNameRequired": "Parent name is required.",
+                    "emailRequired": "Email address is required.",
+                    "categoryNotFound": "Parent category not found."
+                },
+                "success": {
+                    "sent": "Invitation sent successfully to %name%."
+                },
                 "title": "Invite parents to %schoolName%",
                 "parentName": "Parent name",
                 "parentNamePlaceholder": "Enter parent's name",

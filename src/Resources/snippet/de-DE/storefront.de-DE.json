@@ -5,8 +5,12 @@
             "schoolName": "Bitte geben Sie einen Schulnamen ein.",
             "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
             "country": "Bitte wählen Sie ein Land aus.",
-            "logo": "Bitte laden Sie ein Schullogo hoch."
-            },
+            "logo": "Bitte laden Sie ein Schullogo hoch.",
+            "logoTooLarge": "Die Logo-Datei ist zu groß. Die maximale Dateigröße beträgt 5 MB.",
+            "logoActiveContent": "Das hochgeladene Logo ist ungültig. SVG-Dateien mit aktivem Inhalt sind nicht erlaubt.",
+            "invalidLogo": "Das hochgeladene Logo ist ungültig. SVG-Dateien mit aktivem Inhalt sind nicht erlaubt.",
+            "generalError": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+        },
         "storefront": {
             "school": {
                 "welcome": "Willkommen im %schoolName% Shop.",
@@ -31,9 +35,20 @@
                 "logo": "Schullogo",
                 "comments": "Kommentare",
                 "submit": "Absenden",
-                "success": "Ihre Schulregistrierung wurde erfolgreich übermittelt."
+                "error": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+                "successTitle": "Registrierung eingereicht",
+                "success": "Vielen Dank für Ihr Interesse. Ihre Schulregistrierung wurde erfolgreich eingereicht. Wir prüfen Ihre Anfrage und melden uns in Kürze bei Ihnen."
             },
             "invitation": {
+                "error": {
+                "schoolNotFound": "Schule nicht gefunden.",
+                "parentNameRequired": "Name des Elternteils ist erforderlich.",
+                "emailRequired": "E-Mail-Adresse ist erforderlich.",
+                "categoryNotFound": "Elternkategorie wurde nicht gefunden."
+                },
+                "success": {
+                    "sent": "Einladung wurde erfolgreich an %name% gesendet."
+                },
                 "title": "Eltern zu %schoolName% einladen",
                 "parentName": "Name der Eltern",
                 "parentNamePlaceholder": "Namen der Eltern eingeben",

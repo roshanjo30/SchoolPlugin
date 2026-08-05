@@ -6,7 +6,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Struct\ArrayEntity;
-use Shopware\Core\Content\Product\SalesChannel\Detail\ProductDetailRoute;
+use Shopware\Core\Content\Product\SalesChannel\ProductListRoute;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,15 +21,15 @@ class SchoolPageController extends StorefrontController
 {
     public function __construct(
         private readonly EntityRepository $schoolRepository,
-        private readonly EntityRepository $productRepository,
-    
+
         /**
          * @var EntityRepository<SchoolProductPriceEntity>
          */
         private readonly EntityRepository $schoolProductPriceRepository,
-        private readonly ProductDetailRoute $productDetailRoute,
+        private readonly ProductListRoute $productListRoute,
         private readonly RequestStack $requestStack,
-        private readonly CartService $cartService
+        private readonly CartService $cartService,
+        private readonly EntityRepository $schoolParentInvitationRepository
     ) {
     }
 
@@ -52,9 +52,24 @@ class SchoolPageController extends StorefrontController
             throw $this->createNotFoundException();
         }
 
+        $criteria = new Criteria();
+        $criteria->addFilter(new EqualsFilter('token', $token));
+        $criteria->addFilter(new EqualsFilter('schoolId', $schoolId));
+
+        $invitation = $this->schoolParentInvitationRepository
+            ->search($criteria, $context)
+            ->first();
+
+        if ($invitation === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $criteria = new Criteria([$schoolId]);
+        $criteria->addAssociation('logoMedia');
+
         $school = $this->schoolRepository
             ->search(
-                new Criteria([$schoolId]),
+                $criteria,
                 $context
             )
             ->first();
@@ -113,10 +128,14 @@ class SchoolPageController extends StorefrontController
             $schoolPriceMap[$schoolPrice->getProductId()] =
                 $schoolPrice->getPrice();
         }
+        
 
+        
         $products = [];
+
         if ($school->getCategoryId()) {
             $criteria = new Criteria();
+
             $criteria->addFilter(
                 new EqualsFilter(
                     'categories.id',
@@ -124,38 +143,29 @@ class SchoolPageController extends StorefrontController
                 )
             );
 
-            $productIds = $this->productRepository
-                ->searchIds(
-                    $criteria,
-                    $context
-                )
-                ->getIds();
+            $criteria->addAssociation('cover.media');
 
-            foreach ($productIds as $productId) {
-                $detailCriteria = new Criteria();
-                $detailCriteria->addAssociation(
-                    'cover.media'
-                );
-                $detail = $this->productDetailRoute->load(
-                    $productId,
-                    $request,
-                    $salesChannelContext,
-                    $detailCriteria
-                );
-                $product = $detail->getProduct();
-                if (isset($schoolPriceMap[$productId])) {
+            $products = $this->productListRoute
+                ->load(
+                    $criteria,
+                    $salesChannelContext
+                )
+                ->getProducts();
+
+            foreach ($products as $product) {
+                $price = $schoolPriceMap[$product->getId()] ?? null;
+                if ($price !== null) {
                     $product->addExtension(
                         'schoolPrice',
                         new ArrayEntity([
-                            'price' => (float) $schoolPriceMap[$productId],
+                            'price' => (float) $price,
                             'formattedPrice' => number_format(
-                                (float) $schoolPriceMap[$productId],
+                                (float) $price,
                                 2
-                            )
+                            ),
                         ])
                     );
                 }
-                $products[] = $product;
             }
         }
 

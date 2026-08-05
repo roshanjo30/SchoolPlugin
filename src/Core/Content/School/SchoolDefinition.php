@@ -14,12 +14,10 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\SearchRanking;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
-use Shopware\Core\Framework\DataAbstractionLayer\Field\IntField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\LongTextField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToOneAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
-use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToOneAssociationField;
 
 class SchoolDefinition extends EntityDefinition
 {
@@ -34,6 +32,7 @@ class SchoolDefinition extends EntityDefinition
     {
         return SchoolEntity::class;
     }
+   
 
     public function getCollectionClass(): string
     {
@@ -65,20 +64,34 @@ class SchoolDefinition extends EntityDefinition
                 new ApiAware()
             ),
 
-            new StringField('phone', 'phone'),
+            (new StringField('phone', 'phone'))->addFlags(new ApiAware()),
 
-            new StringField('street', 'street'),
+            (new StringField('street', 'street'))->addFlags(new ApiAware()),
 
-            new StringField('zipcode', 'zipcode'),
+            (new StringField('zipcode', 'zipcode'))->addFlags(new ApiAware()),
 
-            new StringField('city', 'city'),
-
-            new FkField('country_id', 'countryId', CountryDefinition::ENTITY_NAME),
+            (new StringField('city', 'city'))->addFlags(new ApiAware()),
 
 
-            new FkField('logo_media_id', 'logoMediaId', MediaDefinition::ENTITY_NAME),
+            (new FkField(
+                'country_id',
+                'countryId',
+                CountryDefinition::ENTITY_NAME
+            ))->addFlags(
+                new Required(),
+                new ApiAware()
+            ),
 
-            new LongTextField('comment', 'comment'),
+
+            (new FkField(
+                'logo_media_id',
+                'logoMediaId',
+                MediaDefinition::ENTITY_NAME
+            ))->addFlags(new ApiAware()),
+
+            (new LongTextField('comment', 'comment'))
+                ->addFlags(new ApiAware()),
+        
 
             (new StringField('status', 'status'))->addFlags(
                 new Required(),
@@ -89,17 +102,17 @@ class SchoolDefinition extends EntityDefinition
 
             new UpdatedAtField(),
 
-            new FkField(
+            (new FkField(
                 'category_id',
                 'categoryId',
                 CategoryDefinition::ENTITY_NAME
-            ),
-
+            ))->addFlags(new ApiAware()),
+            
             (new FkField(
                 'parent_category_id',
                 'parentCategoryId',
                 CategoryDefinition::ENTITY_NAME
-            )),
+            ))->addFlags(new ApiAware()),
 
             new ManyToOneAssociationField(
                 'country',

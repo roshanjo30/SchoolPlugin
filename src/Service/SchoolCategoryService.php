@@ -9,7 +9,10 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 
-class SchoolCategoryService
+/**
+ * @internal
+ */
+final class SchoolCategoryService
 {
     public const SCHOOLS_ROOT_CATEGORY_NAME = 'Schools';
     public function __construct(

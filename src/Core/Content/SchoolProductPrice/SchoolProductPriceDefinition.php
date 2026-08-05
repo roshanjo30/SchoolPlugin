@@ -33,6 +33,7 @@ class SchoolProductPriceDefinition extends EntityDefinition
         return SchoolProductPriceEntity::class;
     }
 
+
     public function getCollectionClass(): string
     {
         return SchoolProductPriceCollection::class;
@@ -54,28 +55,36 @@ class SchoolProductPriceDefinition extends EntityDefinition
                 'school_id',
                 'schoolId',
                 SchoolDefinition::class
-            )),
+            ))->addFlags(
+                new Required()
+            ),
 
 
             (new FkField(
                 'product_id',
                 'productId',
                 ProductDefinition::class
-            )),
+            ))->addFlags(
+                new Required()
+            ),
 
             new ReferenceVersionField(
                 ProductDefinition::class,
                 'product_version_id'
             ),
 
-            new FloatField(
+            (new FloatField(
                 'price',
                 'price'
+            ))->addFlags(
+                new Required()
             ),
 
-            new BoolField(
+            (new BoolField(
                 'active',
                 'active'
+            ))->addFlags(
+                new Required()
             ),
 
             new CreatedAtField(),

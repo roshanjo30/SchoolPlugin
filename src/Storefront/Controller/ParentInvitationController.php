@@ -41,7 +41,10 @@ class ParentInvitationController extends StorefrontController
             ->search(new Criteria([$schoolId]), $context)
             ->first();
         if ($school === null) {
-            $this->addFlash('danger', 'School not found.');
+            $this->addFlash(
+                'danger',
+                $this->trans('schoolPlugin.storefront.invitation.error.schoolNotFound')
+            );
             return $this->redirect(
                 $request->headers->get('referer') ?? '/'
             );
@@ -50,14 +53,20 @@ class ParentInvitationController extends StorefrontController
         $parentName = trim((string) $request->request->get('parentName'));
         $email = trim((string) $request->request->get('email'));
         if ($parentName === '') {
-            $this->addFlash('danger', 'Parent name is required.');
+            $this->addFlash(
+                'danger',
+                $this->trans('schoolPlugin.storefront.invitation.error.parentNameRequired')
+            );
             return $this->redirect(
                 $request->headers->get('referer') ?? '/'
             );
         }
 
         if ($email === '') {
-            $this->addFlash('danger', 'Email is required.');
+            $this->addFlash(
+                'danger',
+                $this->trans('schoolPlugin.storefront.invitation.error.emailRequired')
+            );
             return $this->redirect(
                 $request->headers->get('referer') ?? '/'
             );
@@ -91,7 +100,10 @@ class ParentInvitationController extends StorefrontController
             
         $parentCategoryId = $school->getParentCategoryId();
         if (!$parentCategoryId) {
-            $this->addFlash('danger', 'Parent category not found.');
+            $this->addFlash(
+                'danger',
+                $this->trans('schoolPlugin.storefront.invitation.error.categoryNotFound')
+            );
             return $this->redirect(
                 $request->headers->get('referer') ?? '/'
             );
@@ -116,9 +128,9 @@ class ParentInvitationController extends StorefrontController
 
         $this->addFlash(
             'success',
-            sprintf(
-                'Invitation sent successfully to %s.',
-                $parentName
+            $this->trans(
+                'schoolPlugin.storefront.invitation.success.sent',
+                ['%name%' => $parentName]
             )
         );
 

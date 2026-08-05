@@ -5,12 +5,18 @@ namespace SchoolPlugin\Service;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use SchoolPlugin\Validation\SchoolValidator;
 
-class SchoolRegistrationService
+
+/**
+ * @internal
+ */
+final class SchoolRegistrationService
 {
     public function __construct(
         private readonly EntityRepository $schoolRepository,
-        private readonly MediaUploadService $mediaUploadService
+        private readonly MediaUploadService $mediaUploadService,
+        private readonly SchoolValidator $schoolValidator
     ) {
     }
 
@@ -19,6 +25,11 @@ class SchoolRegistrationService
         ?UploadedFile $logo,
         Context $context
     ): void {
+        $this->schoolValidator->validate($data);
+        
+ 
+        $this->schoolValidator->validateLogo($logo);
+
         $logoMediaId = null;
         if ($logo instanceof UploadedFile) {
             $logoMediaId = $this->mediaUploadService->upload(

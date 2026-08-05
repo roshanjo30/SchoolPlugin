@@ -1,17 +1,37 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %} 
 {% block base_content %}
-<style>
-.school-registration-form.was-validated .form-control:valid,
-.school-registration-form.was-validated .form-select:valid {
-    background-image: none !important;
-    background-size: 0 0 !important;
-    border-color: var(--bs-border-color) !important;
-    box-shadow: none !important;
-    padding-right: .75rem !important;
-}
-</style>
 
 <div class="container py-5">
+{% if violations %}
+    {% set nonLogoViolations = violations|filter(v => v.propertyPath != 'logo') %}
+
+    {% if nonLogoViolations|length > 0 %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for violation in nonLogoViolations %}
+                    <li>{{ violation.message|trans }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endif %}
+
+    {% if success %}
+
+        <div class="text-center py-5">
+
+            <h1 class="mb-4">
+                {{ "schoolPlugin.storefront.registration.successTitle"|trans }}
+            </h1>
+
+            <p class="lead">
+                {{ "schoolPlugin.storefront.registration.success"|trans }}
+            </p>
+
+        </div>
+
+    {% else %}
+  
     <h1 class="mb-4">
         {{ "schoolPlugin.storefront.registration.title"|trans }}
     </h1>
@@ -29,6 +49,7 @@
                 <input type="text"
                         class="form-control"
                         name="schoolName"
+                        value="{{ formData.schoolName|default('') }}"
                         required
                         data-validation="required">
 
@@ -44,6 +65,7 @@
                 <input type="text"
                         class="form-control"
                         name="contactPerson"
+                        value="{{ formData.contactPerson|default('') }}"
                         required
                         data-validation="required">
                     <div class="invalid-feedback">
@@ -58,6 +80,7 @@
                 <input type="email"
                         class="form-control"
                         name="email"
+                        value="{{ formData.email|default('') }}"
                         required
                         data-validation="email">
                     <div class="invalid-feedback">
@@ -71,7 +94,8 @@
                 </label>
                 <input type="text"
                        class="form-control"
-                       name="phone">
+                       name="phone"
+                       value="{{ formData.phone|default('') }}">
             </div>
 
             <div class="col-md-6 mb-3">
@@ -80,7 +104,8 @@
                 </label>
                 <input type="text"
                        class="form-control"
-                       name="street">
+                       name="street"
+                       value="{{ formData.street|default('') }}">
             </div>
 
             <div class="col-md-3 mb-3">
@@ -89,7 +114,8 @@
                 </label>
                 <input type="text"
                        class="form-control"
-                       name="zipcode">
+                       name="zipcode"
+                       value="{{ formData.zipcode|default('') }}">
             </div>
 
             <div class="col-md-3 mb-3">
@@ -98,7 +124,8 @@
                 </label>
                 <input type="text"
                        class="form-control"
-                       name="city">
+                       name="city"
+                       value="{{ formData.city|default('') }}">
             </div>
 
             <div class="col-md-6 mb-3">
@@ -118,7 +145,11 @@
                 </option>
 
                 {% for country in countries %}
-                    <option value="{{ country.id }}">
+                    <option
+                        value="{{ country.id }}"
+                        {% if formData.countryId|default('') == country.id %}
+                            selected
+                        {% endif %}>
                         {{ country.translated.name }}
                     </option>
                 {% endfor %}
@@ -135,20 +166,40 @@
                 {{ "schoolPlugin.storefront.registration.logo"|trans }} *
             </label>
 
-            <input type="file"
+            {% set logoViolation = null %}
+
+            {% for violation in violations|default([]) %}
+                {% if violation.propertyPath == 'logo' %}
+                    {% set logoViolation = violation %}
+                {% endif %}
+            {% endfor %}
+
+            <input
+                type="file"
                 id="logo"
-                class="form-control"
                 name="logo"
                 accept=".jpg,.jpeg,.png,.svg"
                 required="required"
-                data-validation="required">
+                data-validation="required"
+                class="form-control{% if logoViolation or error|default(false) %} is-invalid{% endif %}">
 
-            <div class="invalid-feedback">
-                {{ "schoolPlugin.validation.logo"|trans }}
-            </div>
+            {% if logoViolation %}
+                <div class="invalid-feedback d-block">
+                    {{ logoViolation.message|trans }}
+                </div>
 
+            {% elseif error|default(false) %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+
+            {% else %}
+                <div class="invalid-feedback">
+                    {{ "schoolPlugin.validation.logo"|trans }}
+                </div>
+            {% endif %}
         </div>
-
+                
             <div class="col-12 mb-3">
                 <label>
                     {{ "schoolPlugin.storefront.registration.comments"|trans }}
@@ -156,7 +207,7 @@
 
                 <textarea class="form-control"
                           rows="5"
-                          name="comment"></textarea>
+                          name="comment">{{ formData.comment|default('') }}</textarea>
             </div>
         </div>
 
@@ -164,5 +215,6 @@
             {{ "schoolPlugin.storefront.registration.submit"|trans }}
         </button>
     </form>
+    {% endif %}
 </div>
 {% endblock %} 
